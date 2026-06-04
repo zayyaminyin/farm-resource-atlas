@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tidewise Resilience Studio</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">TW</div>
+          <div>
+            <h1>Tidewise</h1>
+            <p>Resilience Studio</p>
+          </div>
+        </div>
+
+        <nav class="nav-list" aria-label="Primary">
+          <a href="#planner" class="active">Planner</a>
+          <a href="#portfolio">Portfolio</a>
+          <a href="#recommendations">Recommendations</a>
+          <a href="#brief">Brief</a>
+        </nav>
+
+        <section class="sidebar-panel">
+          <span class="eyebrow">Project</span>
+          <input id="projectName" type="text" value="Harbor District Resilience Plan" aria-label="Project name" />
+          <label>
+            Region
+            <select id="region">
+              <option>Gulf Coast</option>
+              <option>Atlantic Coast</option>
+              <option>Pacific Coast</option>
+              <option>Great Lakes</option>
+              <option>Island Community</option>
+            </select>
+          </label>
+          <label>
+            Planning horizon
+            <select id="horizon">
+              <option value="10">10 years</option>
+              <option value="20" selected>20 years</option>
+              <option value="30">30 years</option>
+              <option value="50">50 years</option>
+            </select>
+          </label>
+        </section>
+
+        <section class="sidebar-panel">
+          <span class="eyebrow">Actions</span>
+          <button id="saveBtn" class="secondary-button">Save scenario</button>
+          <button id="exportBtn" class="secondary-button">Export JSON</button>
+          <button id="printBtn" class="secondary-button">Print brief</button>
+        </section>
+      </aside>
+
+      <main>
+        <header class="topbar">
+          <div>
+            <span class="eyebrow">Decision-support MVP</span>
+            <h2>Compare coastal protection options with natural capital tradeoffs.</h2>
+          </div>
+          <div class="status-pill" id="statusPill">Saved locally</div>
+        </header>
+
+        <section id="planner" class="grid planner-grid">
+          <div class="panel inputs-panel">
+            <div class="panel-header">
+              <div>
+                <span class="eyebrow">Scenario inputs</span>
+                <h3>Community risk profile</h3>
+              </div>
+            </div>
+            <div class="control-grid">
+              <label>
+                Coastline length
+                <div class="range-row">
+                  <input id="coastline" type="range" min="1" max="50" value="12" />
+                  <output id="coastlineOut">12 km</output>
+                </div>
+              </label>
+              <label>
+                Exposed population
+                <div class="range-row">
+                  <input id="population" type="range" min="1000" max="250000" step="1000" value="42000" />
+                  <output id="populationOut">42,000</output>
+                </div>
+              </label>
+              <label>
+                Critical assets at risk
+                <div class="range-row">
+                  <input id="assetValue" type="range" min="50" max="5000" step="50" value="850" />
+                  <output id="assetValueOut">$850M</output>
+                </div>
+              </label>
+              <label>
+                Annual storm probability
+                <div class="range-row">
+                  <input id="stormRisk" type="range" min="2" max="35" value="14" />
+                  <output id="stormRiskOut">14%</output>
+                </div>
+              </label>
+              <label>
+                Sea-level-rise outlook
+                <div class="range-row">
+                  <input id="seaRise" type="range" min="10" max="120" value="45" />
+                  <output id="seaRiseOut">45 cm</output>
+                </div>
+              </label>
+              <label>
+                Available capital budget
+                <div class="range-row">
+                  <input id="budget" type="range" min="10" max="1000" step="10" value="220" />
+                  <output id="budgetOut">$220M</output>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div class="panel map-panel" aria-label="Coastal planning visualization">
+            <div class="map-toolbar">
+              <div>
+                <span class="eyebrow">Planning transect</span>
+                <h3 id="mapTitle">Harbor District</h3>
+              </div>
+              <span id="budgetBadge">$0M selected</span>
+            </div>
+            <div class="coast-map">
+              <div class="water"></div>
+              <div class="shoreline"></div>
+              <div class="district district-a">Port</div>
+              <div class="district district-b">Homes</div>
+              <div class="district district-c">Wetland</div>
+              <div class="measure-line"></div>
+              <div class="hazard-ring ring-one"></div>
+              <div class="hazard-ring ring-two"></div>
+            </div>
+            <div class="legend">
+              <span><i class="nature"></i> Nature-based protection</span>
+              <span><i class="risk"></i> Flood exposure</span>
+              <span><i class="asset"></i> Critical assets</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="metric-strip" aria-label="Scenario metrics">
+          <article>
+            <span>Total cost</span>
+            <strong id="totalCost">$0M</strong>
+            <small id="budgetStatus">Within budget</small>
+          </article>
+          <article>
+            <span>Protection gain</span>
+            <strong id="protectionGain">0%</strong>
+            <small>Weighted flood-risk reduction</small>
+          </article>
+          <article>
+            <span>Natural capital</span>
+            <strong id="naturalCapital">0</strong>
+            <small>Biodiversity + carbon index</small>
+          </article>
+          <article>
+            <span>Avoided loss</span>
+            <strong id="avoidedLoss">$0M</strong>
+            <small id="payback">Payback not available</small>
+          </article>
+        </section>
+
+        <section id="portfolio" class="panel">
+          <div class="panel-header split">
+            <div>
+              <span class="eyebrow">Portfolio builder</span>
+              <h3>Select interventions</h3>
+            </div>
+            <div class="weight-controls" aria-label="Decision priorities">
+              <label>Protection <input id="weightProtection" type="range" min="1" max="5" value="4" /></label>
+              <label>Ecology <input id="weightEcology" type="range" min="1" max="5" value="4" /></label>
+              <label>Cost <input id="weightCost" type="range" min="1" max="5" value="3" /></label>
+            </div>
+          </div>
+          <div id="solutionGrid" class="solution-grid"></div>
+        </section>
+
+        <section id="recommendations" class="grid lower-grid">
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <span class="eyebrow">Decision ranking</span>
+                <h3>Recommended path</h3>
+              </div>
+            </div>
+            <div id="recommendationList" class="recommendation-list"></div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <span class="eyebrow">Tradeoff radar</span>
+                <h3>Portfolio balance</h3>
+              </div>
+            </div>
+            <div class="radar-wrap">
+              <div class="radar">
+                <span id="radarProtection">Protection</span>
+                <span id="radarEcology">Ecology</span>
+                <span id="radarCarbon">Carbon</span>
+                <span id="radarEquity">Equity</span>
+                <span id="radarMaintenance">Maintenance</span>
+              </div>
+            </div>
+            <div id="tradeoffText" class="tradeoff-text"></div>
+          </div>
+        </section>
+
+        <section id="brief" class="panel brief-panel">
+          <div class="panel-header split">
+            <div>
+              <span class="eyebrow">Auto-generated planning brief</span>
+              <h3>Executive summary</h3>
+            </div>
+            <button id="copyBriefBtn" class="primary-button">Copy brief</button>
+          </div>
+          <div id="briefText" class="brief-text"></div>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

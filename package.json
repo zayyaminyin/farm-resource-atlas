@@ -1,0 +1,18 @@
+{
+  "name": "tidewise-resilience-studio",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Desktop-style MVP for comparing coastal resilience interventions and natural capital tradeoffs.",
+  "scripts": {
+    "start": "python3 -m http.server 5173",
+    "dev": "python3 -m http.server 5173"
+  },
+  "keywords": [
+    "coastal-resilience",
+    "natural-capital",
+    "blue-carbon",
+    "planning"
+  ],
+  "author": "",
+  "license": "MIT"
+}
