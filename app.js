@@ -99,6 +99,9 @@ const outputs = {
   naturalCapital: document.querySelector("#naturalCapital"),
   avoidedLoss: document.querySelector("#avoidedLoss"),
   payback: document.querySelector("#payback"),
+  heroProtection: document.querySelector("#heroProtection"),
+  heroCapital: document.querySelector("#heroCapital"),
+  heroLoss: document.querySelector("#heroLoss"),
   budgetBadge: document.querySelector("#budgetBadge"),
   mapTitle: document.querySelector("#mapTitle"),
   tileLayer: document.querySelector("#tileLayer"),
@@ -328,6 +331,9 @@ function renderMetrics(state, model) {
   outputs.naturalCapital.textContent = model.naturalCapital;
   outputs.avoidedLoss.textContent = money(model.avoidedLoss);
   outputs.payback.textContent = model.paybackYears ? `${model.paybackYears.toFixed(1)} year payback` : "Payback not available";
+  if (outputs.heroProtection) outputs.heroProtection.textContent = `${Math.round(model.protection)}%`;
+  if (outputs.heroCapital) outputs.heroCapital.textContent = model.naturalCapital;
+  if (outputs.heroLoss) outputs.heroLoss.textContent = money(model.avoidedLoss);
   outputs.budgetBadge.textContent = `${money(model.cost)} selected`;
   outputs.mapTitle.textContent = state.projectName.split(" ").slice(0, 3).join(" ");
   renderBleachOverlay(state);
@@ -410,6 +416,14 @@ document.querySelector("#zoomInBtn").addEventListener("click", () => {
 document.querySelector("#zoomOutBtn").addEventListener("click", () => {
   mapState.zoom = Math.max(5, mapState.zoom - 1);
   renderTiles();
+});
+
+document.querySelectorAll("[data-map-style]").forEach((button) => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll("[data-map-style]").forEach((item) => item.classList.remove("active"));
+    button.classList.add("active");
+    document.querySelector(".real-map-panel").className = `real-map-panel map-style-${button.dataset.mapStyle}`;
+  });
 });
 
 document.querySelector("#saveBtn").addEventListener("click", () => persist(true));

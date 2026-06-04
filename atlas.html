@@ -59,6 +59,8 @@
 
         <section class="real-map-panel" aria-label="Real satellite map">
           <div id="tileLayer" class="tile-layer"></div>
+          <div class="spectral-water"></div>
+          <div class="scan-beam"></div>
           <svg class="map-overlays" viewBox="0 0 1200 760" preserveAspectRatio="none" aria-hidden="true">
             <defs>
               <filter id="glow">
@@ -68,7 +70,18 @@
                   <feMergeNode in="SourceGraphic" />
                 </feMerge>
               </filter>
+              <linearGradient id="riskGradient" x1="0%" x2="100%" y1="0%" y2="0%">
+                <stop offset="0%" stop-color="#f7e84a" stop-opacity="0.15" />
+                <stop offset="52%" stop-color="#ff7b22" stop-opacity="0.42" />
+                <stop offset="100%" stop-color="#df1f2d" stop-opacity="0.28" />
+              </linearGradient>
             </defs>
+            <g class="bathymetry-lines">
+              <path d="M92,205 C223,150 355,176 459,238 C564,302 684,321 821,258 C930,208 1027,209 1130,273" />
+              <path d="M61,338 C193,281 324,294 450,359 C574,423 713,452 866,398 C980,358 1065,382 1167,455" />
+              <path d="M49,500 C180,436 319,454 452,530 C581,604 734,634 887,579 C1003,536 1082,548 1174,614" />
+              <path d="M202,79 C326,67 445,112 555,174 C678,244 804,223 941,149" />
+            </g>
             <path id="reefOverlay" class="reef-line" d="M135,584 C218,520 260,432 348,401 C438,370 518,416 598,352 C681,286 751,249 842,263 C957,280 1000,194 1092,122" />
             <path id="floodOverlay" class="flood-zone" d="M778,96 C909,118 1020,194 1062,298 C1106,407 1060,536 954,609 C830,696 646,687 533,592 C423,500 401,350 468,232 C529,127 654,74 778,96Z" />
             <path id="habitatOverlay" class="habitat-zone" d="M115,619 C196,564 263,498 336,493 C410,489 464,564 540,545 C641,520 672,404 768,383 C860,363 948,423 1028,380 L1066,438 C964,505 884,482 794,529 C696,581 638,664 512,662 C401,660 345,586 252,621 C198,641 158,670 106,684Z" />
@@ -81,6 +94,34 @@
             </g>
             <g id="bleachOverlay" class="bleach-points"></g>
           </svg>
+
+          <div class="hero-title-card">
+            <span class="eyebrow">Live Coastal Intelligence Atlas</span>
+            <h2>Tidewise scans real coastal imagery for resilience opportunities.</h2>
+            <div class="hero-stat-row">
+              <span><b id="heroProtection">86%</b> protection gain</span>
+              <span><b id="heroCapital">114</b> natural capital</span>
+              <span><b id="heroLoss">$2.6B</b> avoided loss</span>
+            </div>
+          </div>
+
+          <div class="map-style-dock" aria-label="Map styles">
+            <button class="active" data-map-style="satellite">Satellite</button>
+            <button data-map-style="thermal">Thermal</button>
+            <button data-map-style="bathymetry">Bathymetry</button>
+            <button data-map-style="planning">Planning</button>
+          </div>
+
+          <div class="inspector-card">
+            <span class="eyebrow">Selected cell</span>
+            <h3>Reef-fringe restoration zone</h3>
+            <div class="inspector-grid">
+              <span>Wave attenuation <b>72%</b></span>
+              <span>Habitat uplift <b>+41</b></span>
+              <span>Payback <b>2.2y</b></span>
+              <span>Confidence <b>0.84</b></span>
+            </div>
+          </div>
 
           <div class="map-credit">Imagery layer: Esri World Imagery map tiles</div>
           <div class="coordinate-chip" id="coordinateChip">25.7617, -80.1918 · z8</div>
@@ -134,6 +175,26 @@
             <div class="layer-toggle">
               <span>Base map imagery</span>
               <label class="switch"><input type="checkbox" data-layer="tileLayer" checked /><span></span></label>
+            </div>
+          </section>
+
+          <section class="layer-card visual-stack">
+            <span class="eyebrow">Visual intelligence</span>
+            <div class="thumb-grid">
+              <div class="thumb thumb-sat"><span>Satellite</span></div>
+              <div class="thumb thumb-risk"><span>Risk</span></div>
+              <div class="thumb thumb-reef"><span>Reef</span></div>
+            </div>
+            <div class="spark-panel">
+              <span>Resilience score</span>
+              <div class="spark-bars">
+                <i style="height:42%"></i>
+                <i style="height:62%"></i>
+                <i style="height:55%"></i>
+                <i style="height:81%"></i>
+                <i style="height:74%"></i>
+                <i style="height:92%"></i>
+              </div>
             </div>
           </section>
 

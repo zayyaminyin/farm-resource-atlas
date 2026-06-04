@@ -201,8 +201,8 @@ button {
   position: relative;
   display: grid;
   grid-template-columns: 52px minmax(0, 1fr) 318px;
-  grid-template-rows: minmax(620px, calc(100vh - 122px));
-  min-height: 620px;
+  grid-template-rows: minmax(780px, calc(100vh - 122px));
+  min-height: 780px;
   overflow: hidden;
 }
 
@@ -255,6 +255,18 @@ button {
     repeating-linear-gradient(90deg, rgba(100, 200, 224, 0.035) 0 1px, transparent 1px 74px);
 }
 
+.map-style-thermal .tile-layer {
+  filter: saturate(1.6) contrast(1.2) brightness(0.58) hue-rotate(155deg);
+}
+
+.map-style-bathymetry .tile-layer {
+  filter: saturate(1.35) contrast(1.16) brightness(0.66) hue-rotate(185deg);
+}
+
+.map-style-planning .tile-layer {
+  filter: saturate(0.9) contrast(1.25) brightness(0.78);
+}
+
 .map-tile {
   width: 100%;
   height: 100%;
@@ -270,6 +282,46 @@ button {
   mix-blend-mode: screen;
 }
 
+.spectral-water {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 20% 70%, rgba(21, 203, 255, 0.32), transparent 28%),
+    radial-gradient(ellipse at 78% 22%, rgba(247, 232, 74, 0.22), transparent 20%),
+    radial-gradient(ellipse at 63% 52%, rgba(0, 255, 205, 0.18), transparent 24%),
+    linear-gradient(120deg, rgba(4, 8, 20, 0.2), transparent 40%, rgba(4, 8, 20, 0.42));
+  mix-blend-mode: screen;
+}
+
+.scan-beam {
+  position: absolute;
+  inset: -40% auto -20% 42%;
+  width: 18%;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(110, 241, 255, 0.2), transparent);
+  transform: rotate(10deg);
+  animation: scanDrift 7s ease-in-out infinite alternate;
+}
+
+@keyframes scanDrift {
+  from {
+    translate: -110px 0;
+  }
+
+  to {
+    translate: 190px 0;
+  }
+}
+
+.bathymetry-lines path {
+  fill: none;
+  stroke: rgba(143, 236, 255, 0.42);
+  stroke-width: 1.8;
+  stroke-dasharray: 5 10;
+  filter: url(#glow);
+}
+
 .reef-line {
   fill: none;
   stroke: var(--yellow);
@@ -280,7 +332,7 @@ button {
 }
 
 .flood-zone {
-  fill: rgba(255, 87, 34, 0.18);
+  fill: url(#riskGradient);
   stroke: rgba(255, 123, 34, 0.72);
   stroke-width: 3;
   filter: url(#glow);
@@ -353,6 +405,122 @@ button {
   box-shadow: var(--shadow);
 }
 
+.hero-title-card {
+  position: absolute;
+  top: 26px;
+  left: 82px;
+  z-index: 6;
+  width: min(560px, calc(100% - 430px));
+  padding: 18px;
+  background: linear-gradient(135deg, rgba(4, 12, 25, 0.86), rgba(8, 35, 58, 0.62));
+  border: 1px solid rgba(105, 233, 255, 0.28);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px);
+}
+
+.hero-title-card h2 {
+  margin: 0;
+  max-width: 500px;
+  font-size: 31px;
+  line-height: 1.05;
+  letter-spacing: 0;
+}
+
+.hero-stat-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.hero-stat-row span {
+  display: grid;
+  gap: 4px;
+  color: #b9cfda;
+  padding: 9px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(105, 233, 255, 0.16);
+  border-radius: 6px;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.hero-stat-row b {
+  color: #fff;
+  font-size: 18px;
+}
+
+.map-style-dock {
+  position: absolute;
+  z-index: 7;
+  top: 26px;
+  right: 338px;
+  display: flex;
+  gap: 7px;
+  padding: 7px;
+  background: rgba(4, 13, 27, 0.74);
+  border: 1px solid rgba(105, 233, 255, 0.22);
+  border-radius: 8px;
+  backdrop-filter: blur(18px);
+}
+
+.map-style-dock button {
+  color: #c8e8f5;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  padding: 8px 10px;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.map-style-dock button.active,
+.map-style-dock button:hover {
+  color: #041321;
+  background: var(--yellow);
+}
+
+.inspector-card {
+  position: absolute;
+  z-index: 7;
+  right: 338px;
+  bottom: 182px;
+  width: 310px;
+  padding: 15px;
+  background: rgba(7, 17, 32, 0.82);
+  border: 1px solid rgba(247, 232, 74, 0.35);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px);
+}
+
+.inspector-card h3 {
+  margin: 0 0 12px;
+  font-size: 18px;
+}
+
+.inspector-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.inspector-grid span {
+  display: grid;
+  gap: 4px;
+  color: #a9c2cf;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 5px;
+  font-size: 11px;
+}
+
+.inspector-grid b {
+  color: #fff;
+  font-size: 16px;
+}
+
 .right-layers {
   z-index: 9;
   display: grid;
@@ -362,6 +530,91 @@ button {
   overflow-y: auto;
   background: rgba(196, 205, 211, 0.78);
   border-left: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.visual-stack {
+  display: grid;
+  gap: 12px;
+}
+
+.thumb-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.thumb {
+  position: relative;
+  min-height: 74px;
+  overflow: hidden;
+  border: 1px solid rgba(105, 233, 255, 0.22);
+  border-radius: 6px;
+  background-size: cover;
+  background-position: center;
+}
+
+.thumb::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent, rgba(2, 10, 20, 0.72));
+}
+
+.thumb span {
+  position: absolute;
+  left: 7px;
+  bottom: 6px;
+  z-index: 2;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.thumb-sat {
+  background-image: url("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/9/205/144");
+}
+
+.thumb-risk {
+  background:
+    radial-gradient(circle at 55% 48%, rgba(223, 31, 45, 0.95), transparent 25%),
+    radial-gradient(circle at 25% 68%, rgba(255, 123, 34, 0.8), transparent 24%),
+    url("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/9/206/144");
+  background-size: cover;
+}
+
+.thumb-reef {
+  background:
+    linear-gradient(135deg, rgba(35, 215, 255, 0.45), rgba(247, 232, 74, 0.45)),
+    url("assets/generated-coastal-intelligence.png");
+  background-size: cover;
+}
+
+.spark-panel {
+  display: grid;
+  gap: 10px;
+  color: #dff8ff;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.spark-bars {
+  display: flex;
+  align-items: end;
+  gap: 6px;
+  height: 70px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(105, 233, 255, 0.16);
+  border-radius: 6px;
+}
+
+.spark-bars i {
+  flex: 1;
+  min-height: 12px;
+  background: linear-gradient(180deg, var(--yellow), var(--cyan));
+  border-radius: 999px 999px 2px 2px;
+  box-shadow: 0 0 14px rgba(35, 215, 255, 0.25);
 }
 
 .layer-card,
@@ -554,7 +807,7 @@ button {
   bottom: 16px;
   left: 72px;
   display: grid;
-  grid-template-columns: minmax(360px, 0.92fr) minmax(420px, 1.08fr);
+  grid-template-columns: minmax(360px, 0.78fr) minmax(460px, 1.22fr);
   gap: 12px;
   pointer-events: none;
 }
@@ -567,6 +820,7 @@ button {
 .scenario-panel {
   border-radius: 6px;
   padding: 14px;
+  background: rgba(5, 16, 31, 0.76);
 }
 
 .panel-title h2 {
@@ -610,7 +864,9 @@ input[type="range"] {
 .metric-grid article {
   min-height: 104px;
   padding: 14px;
-  background: linear-gradient(180deg, rgba(10, 30, 54, 0.96), rgba(6, 17, 31, 0.92));
+  background:
+    linear-gradient(180deg, rgba(10, 30, 54, 0.86), rgba(6, 17, 31, 0.76)),
+    radial-gradient(circle at 100% 0%, rgba(35, 215, 255, 0.2), transparent 38%);
   border: 1px solid var(--line);
   border-radius: 6px;
   box-shadow: var(--shadow);
