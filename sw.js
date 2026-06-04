@@ -1,6 +1,7 @@
 const CACHE_NAME = "tidewise-resilience-studio-v2";
 const APP_ASSETS = [
   "./",
+  "./atlas.html",
   "./index.html",
   "./styles.css",
   "./app.js",
@@ -9,6 +10,7 @@ const APP_ASSETS = [
 ];
 
 self.addEventListener("install", (event) => {
+  self.skipWaiting();
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_ASSETS)));
 });
 
@@ -18,6 +20,7 @@ self.addEventListener("activate", (event) => {
       Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key)))
     )
   );
+  self.clients.claim();
 });
 
 self.addEventListener("fetch", (event) => {
