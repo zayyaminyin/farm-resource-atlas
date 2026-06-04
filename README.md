@@ -9,6 +9,8 @@ Tidewise Resilience Studio is a desktop-style MVP for coastal planners, municipa
 - Live model outputs for protection, capital cost, annual maintenance, biodiversity uplift, blue carbon, avoided loss, and payback.
 - Weighted decision score covering cost, protection, biodiversity, carbon, equity, and maintenance burden.
 - Scenario cards, ranked recommendations, and a visual coastal transect mock map.
+- Real satellite basemap tiles with GIS-style reef, bleaching, habitat, flood, and critical-asset overlays.
+- Generated coastal intelligence visual asset for high-impact planning presentations.
 - Local browser persistence for project settings and selected interventions.
 - Export to JSON and print-friendly planning brief.
 

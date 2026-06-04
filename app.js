@@ -101,6 +101,9 @@ const outputs = {
   payback: document.querySelector("#payback"),
   budgetBadge: document.querySelector("#budgetBadge"),
   mapTitle: document.querySelector("#mapTitle"),
+  tileLayer: document.querySelector("#tileLayer"),
+  coordinateChip: document.querySelector("#coordinateChip"),
+  bleachOverlay: document.querySelector("#bleachOverlay"),
   statusPill: document.querySelector("#statusPill"),
   recommendationList: document.querySelector("#recommendationList"),
   solutionGrid: document.querySelector("#solutionGrid"),
@@ -110,9 +113,69 @@ const outputs = {
 
 const formatter = new Intl.NumberFormat("en-US");
 let selected = new Set(["mangroves", "wetlands", "dunes"]);
+let mapState = {
+  zoom: 8,
+  lat: 25.7617,
+  lon: -80.1918
+};
+
+const regionCenters = {
+  "Gulf Coast": { lat: 25.7617, lon: -80.1918, zoom: 8 },
+  "Atlantic Coast": { lat: 34.6851, lon: -76.621, zoom: 8 },
+  "Pacific Coast": { lat: 37.7749, lon: -122.4194, zoom: 8 },
+  "Great Lakes": { lat: 41.8781, lon: -87.6298, zoom: 8 },
+  "Island Community": { lat: 18.2208, lon: -66.5901, zoom: 8 }
+};
 
 function money(value) {
   return `$${Math.round(value).toLocaleString("en-US")}M`;
+}
+
+function lonToTile(lon, zoom) {
+  return Math.floor(((lon + 180) / 360) * 2 ** zoom);
+}
+
+function latToTile(lat, zoom) {
+  const radians = lat * Math.PI / 180;
+  return Math.floor(((1 - Math.log(Math.tan(radians) + 1 / Math.cos(radians)) / Math.PI) / 2) * 2 ** zoom);
+}
+
+function renderTiles() {
+  if (!outputs.tileLayer) return;
+  const centerX = lonToTile(mapState.lon, mapState.zoom);
+  const centerY = latToTile(mapState.lat, mapState.zoom);
+  const columns = 5;
+  const rows = 4;
+  const tiles = [];
+
+  for (let row = 0; row < rows; row += 1) {
+    for (let column = 0; column < columns; column += 1) {
+      const x = centerX + column - Math.floor(columns / 2);
+      const y = centerY + row - Math.floor(rows / 2);
+      tiles.push(`<img class="map-tile" alt="" src="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/${mapState.zoom}/${y}/${x}" />`);
+    }
+  }
+
+  outputs.tileLayer.innerHTML = tiles.join("");
+  outputs.coordinateChip.textContent = `${mapState.lat.toFixed(4)}, ${mapState.lon.toFixed(4)} · z${mapState.zoom}`;
+}
+
+function renderBleachOverlay(state) {
+  if (!outputs.bleachOverlay) return;
+  const intensity = Math.min(1, (state.stormRisk / 35 + state.seaRise / 120) / 1.55);
+  const points = [
+    [218, 512, 0.38], [271, 455, 0.52], [355, 407, 0.72], [492, 365, 0.44],
+    [621, 315, 0.66], [753, 279, 0.88], [833, 271, 0.61], [930, 218, 0.92],
+    [1003, 162, 0.8], [902, 458, 0.57], [762, 548, 0.46], [588, 617, 0.71],
+    [424, 548, 0.54], [314, 615, 0.86], [1028, 383, 0.64]
+  ];
+
+  outputs.bleachOverlay.innerHTML = points.map(([x, y, base], index) => {
+    const risk = Math.min(1, base * 0.55 + intensity * 0.65);
+    const color = risk > 0.75 ? "#df1f2d" : risk > 0.55 ? "#ff7b22" : "#f7e84a";
+    const radius = Math.round(7 + risk * 17 + (index % 3) * 2);
+    return `<circle cx="${x}" cy="${y}" r="${radius}" fill="${color}" opacity="${0.34 + risk * 0.4}" />`;
+  }).join("");
 }
 
 function getState() {
@@ -267,6 +330,7 @@ function renderMetrics(state, model) {
   outputs.payback.textContent = model.paybackYears ? `${model.paybackYears.toFixed(1)} year payback` : "Payback not available";
   outputs.budgetBadge.textContent = `${money(model.cost)} selected`;
   outputs.mapTitle.textContent = state.projectName.split(" ").slice(0, 3).join(" ");
+  renderBleachOverlay(state);
 }
 
 function render() {
@@ -326,6 +390,28 @@ Object.values(controls).forEach((control) => {
   control.addEventListener("change", render);
 });
 
+controls.region.addEventListener("change", () => {
+  mapState = { ...mapState, ...regionCenters[controls.region.value] };
+  renderTiles();
+});
+
+document.querySelectorAll("[data-layer]").forEach((toggle) => {
+  toggle.addEventListener("change", () => {
+    const layer = document.querySelector(`#${toggle.dataset.layer}`);
+    if (layer) layer.classList.toggle("hidden-layer", !toggle.checked);
+  });
+});
+
+document.querySelector("#zoomInBtn").addEventListener("click", () => {
+  mapState.zoom = Math.min(12, mapState.zoom + 1);
+  renderTiles();
+});
+
+document.querySelector("#zoomOutBtn").addEventListener("click", () => {
+  mapState.zoom = Math.max(5, mapState.zoom - 1);
+  renderTiles();
+});
+
 document.querySelector("#saveBtn").addEventListener("click", () => persist(true));
 document.querySelector("#exportBtn").addEventListener("click", exportJson);
 document.querySelector("#printBtn").addEventListener("click", () => window.print());
@@ -336,4 +422,6 @@ document.querySelector("#copyBriefBtn").addEventListener("click", async () => {
 });
 
 restore();
+mapState = { ...mapState, ...regionCenters[controls.region.value] };
+renderTiles();
 render();
