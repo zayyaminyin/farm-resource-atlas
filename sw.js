@@ -1,4 +1,4 @@
-const CACHE_NAME = "tidewise-resilience-studio-v3";
+const CACHE_NAME = "farm-resource-atlas-v3";
 const APP_ASSETS = [
   "./",
   "./atlas.html",
@@ -6,7 +6,9 @@ const APP_ASSETS = [
   "./styles.css",
   "./app.js",
   "./manifest.webmanifest",
-  "./assets/generated-coastal-intelligence.png"
+  "./assets/farm-atlas/chicken.png",
+  "./assets/farm-atlas/cow.png",
+  "./assets/farm-atlas/sheep.png"
 ];
 
 self.addEventListener("install", (event) => {

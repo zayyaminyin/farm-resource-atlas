@@ -1,441 +1,643 @@
-const solutions = [
+const STORAGE_KEY = "farm-resource-atlas-plan-v1";
+
+const animals = [
   {
-    id: "mangroves",
-    name: "Mangrove Belt",
-    icon: "MG",
-    type: "Nature-based",
-    description: "Restores intertidal tree habitat that reduces wave energy and creates blue-carbon value.",
-    costPerKm: 8,
-    maintenance: 0.22,
-    protection: 7.2,
-    biodiversity: 9.4,
-    carbon: 8.8,
-    equity: 7.5,
-    speed: 4.2
+    id: "chicken",
+    name: "Chicken",
+    summary:
+      "A compact poultry atlas for planning food, feathers, soil inputs, and educational stewardship uses without graphic detail.",
+    imageAsset: "assets/farm-atlas/chicken.png",
+    stewardshipNotes: [
+      "Keep edible and non-edible streams separated for safety.",
+      "Plan feather, shell, and compost pathways before processing day.",
+      "Check local rules before selling any edible or rendered products."
+    ],
+    regions: [
+      {
+        id: "breast",
+        label: "Breast and frame",
+        position: { x: 55, y: 58 },
+        wasteReductionTip: "Separate prime cuts, trim, and frame so each stream has a clear next use.",
+        uses: [
+          {
+            title: "Primary food cuts",
+            category: "Food",
+            description: "Use breast meat and larger pieces for fresh meals, value-added prepared foods, or freezer planning.",
+            resourceRespectNote: "Label batches by date and intended use to reduce freezer loss."
+          },
+          {
+            title: "Stock and broth base",
+            category: "Food",
+            description: "Use frames, necks, and clean bones for rich stock that can support soups, sauces, and farm kitchen meals.",
+            resourceRespectNote: "A stock plan turns small pieces into a high-value staple."
+          },
+          {
+            title: "Pet-food ingredient review",
+            category: "Feed/byproduct",
+            description: "Discuss clean trim options with a qualified feed or veterinary advisor before any animal-feed use.",
+            resourceRespectNote: "Safety review prevents a waste-saving idea from becoming a health risk."
+          }
+        ]
+      },
+      {
+        id: "feathers",
+        label: "Feathers",
+        position: { x: 33, y: 43 },
+        wasteReductionTip: "Keep feathers dry and clean if they may be used for craft, insulation trials, or compost research.",
+        uses: [
+          {
+            title: "Craft and education kits",
+            category: "Craft/material",
+            description: "Clean feathers can support classroom displays, farm tours, seasonal crafts, or natural material samples.",
+            resourceRespectNote: "Small educational uses help people see value beyond the main food product."
+          },
+          {
+            title: "Nitrogen-rich compost input",
+            category: "Compost/soil",
+            description: "Feathers break down slowly but can add nitrogen when mixed with active compost and balanced carbon material.",
+            resourceRespectNote: "Shred or mix well so feathers do not mat and slow the pile."
+          },
+          {
+            title: "Material experiment log",
+            category: "Farm inputs",
+            description: "Track feather quantities for future bedding, insulation, or local maker partnerships.",
+            resourceRespectNote: "Measurement is the first step toward a reliable reuse channel."
+          }
+        ]
+      },
+      {
+        id: "eggshells",
+        label: "Eggshells and feet",
+        position: { x: 60, y: 82 },
+        wasteReductionTip: "Collect small parts separately so they are not lost in general waste.",
+        uses: [
+          {
+            title: "Calcium soil amendment",
+            category: "Compost/soil",
+            description: "Clean, dried, crushed eggshells can be used in compost or soil planning where calcium is useful.",
+            resourceRespectNote: "Apply based on soil needs rather than habit."
+          },
+          {
+            title: "Gelatin-rich stock",
+            category: "Food",
+            description: "Feet can be used for stock where local rules and kitchen standards allow.",
+            resourceRespectNote: "Clear handling procedures help make small parts usable."
+          },
+          {
+            title: "Farm lesson sample",
+            category: "Education",
+            description: "Eggshells show nutrient cycling in a simple, visual way for farm visitors or students.",
+            resourceRespectNote: "A visible cycle reinforces why planning matters."
+          }
+        ]
+      }
+    ]
   },
   {
-    id: "oysters",
-    name: "Oyster Reef",
-    icon: "OR",
-    type: "Nature-based",
-    description: "Living breakwater that attenuates waves, improves water quality, and supports fisheries.",
-    costPerKm: 11,
-    maintenance: 0.32,
-    protection: 6.8,
-    biodiversity: 8.7,
-    carbon: 4.8,
-    equity: 7.1,
-    speed: 6.3
+    id: "cow",
+    name: "Cow",
+    summary:
+      "A whole-animal planning view for major food cuts, hide, bones, fats, organs, manure, and learning materials.",
+    imageAsset: "assets/farm-atlas/cow.png",
+    stewardshipNotes: [
+      "Use licensed processors and local compliance guidance for any edible product.",
+      "Confirm buyers or community uses before creating hard-to-store byproducts.",
+      "Map cold storage, rendering, hide, and compost channels in advance."
+    ],
+    regions: [
+      {
+        id: "muscle",
+        label: "Muscle cuts",
+        position: { x: 58, y: 47 },
+        wasteReductionTip: "Plan premium, ground, trim, and stock streams before the animal is processed.",
+        uses: [
+          {
+            title: "Fresh and frozen cuts",
+            category: "Food",
+            description: "Use steaks, roasts, stew meat, and ground products according to customer demand and storage capacity.",
+            resourceRespectNote: "A cut sheet aligned to real demand prevents unsold inventory."
+          },
+          {
+            title: "Value-added prepared items",
+            category: "Food",
+            description: "Turn trim and less familiar cuts into sausages, broth packs, stew bundles, or ready-to-cook farm shares where allowed.",
+            resourceRespectNote: "Value-added planning honors cuts that are often overlooked."
+          },
+          {
+            title: "Community freezer program",
+            category: "Farm inputs",
+            description: "Package mixed boxes for families, farm crews, or local food access partners.",
+            resourceRespectNote: "Balanced boxes make use of the whole animal, not just headline cuts."
+          }
+        ]
+      },
+      {
+        id: "hide",
+        label: "Hide and hair",
+        position: { x: 46, y: 35 },
+        wasteReductionTip: "Line up hide preservation or pickup quickly because quality drops if timing slips.",
+        uses: [
+          {
+            title: "Leather or rawhide channel",
+            category: "Craft/material",
+            description: "Send hides to an appropriate tannery or craft partner when scale, quality, and rules make sense.",
+            resourceRespectNote: "A pre-arranged partner keeps a large material stream from becoming waste."
+          },
+          {
+            title: "Educational material sample",
+            category: "Education",
+            description: "Use approved samples to teach fiber, leather, and food-system resource cycles.",
+            resourceRespectNote: "Education helps customers understand the full resource story."
+          },
+          {
+            title: "Compost contingency",
+            category: "Compost/soil",
+            description: "If reuse is not practical, route unsuitable material through approved compost or disposal channels.",
+            resourceRespectNote: "A respectful fallback is still part of a good plan."
+          }
+        ]
+      },
+      {
+        id: "bones-fat-organs",
+        label: "Bones, fat, and organs",
+        position: { x: 73, y: 62 },
+        wasteReductionTip: "Separate edible offal, bones, and fat by use case instead of treating them as one stream.",
+        uses: [
+          {
+            title: "Bones for stock",
+            category: "Food",
+            description: "Offer soup bones, marrow bones, and broth packs to customers who want traditional kitchen uses.",
+            resourceRespectNote: "Clear labeling makes unfamiliar parts easier to use."
+          },
+          {
+            title: "Tallow and soap making",
+            category: "Craft/material",
+            description: "Rendered fat can support cooking, candles, soaps, or salves where regulations and facilities allow.",
+            resourceRespectNote: "Small-batch trials reveal which products your farm can maintain responsibly."
+          },
+          {
+            title: "Organ meat education",
+            category: "Food",
+            description: "Use recipe cards or farm-share notes to help customers cook liver, heart, tongue, and other edible organs.",
+            resourceRespectNote: "Education can turn avoided cuts into valued nutrition."
+          }
+        ]
+      },
+      {
+        id: "manure",
+        label: "Manure",
+        position: { x: 84, y: 76 },
+        wasteReductionTip: "Treat manure as a planned fertility stream with timing, storage, and runoff controls.",
+        uses: [
+          {
+            title: "Composted fertility",
+            category: "Compost/soil",
+            description: "Compost manure with bedding and carbon material to support fields, gardens, or pasture improvement.",
+            resourceRespectNote: "Good composting turns a liability into soil health."
+          },
+          {
+            title: "Pasture nutrient map",
+            category: "Farm inputs",
+            description: "Track where nutrients are produced and where they are needed to reduce purchased inputs.",
+            resourceRespectNote: "Mapping prevents both shortage and overload."
+          },
+          {
+            title: "Bedding cycle review",
+            category: "Waste prevention",
+            description: "Pair manure planning with bedding choices so the whole barn cleanout has a destination.",
+            resourceRespectNote: "A bedding plan makes compost more predictable."
+          }
+        ]
+      }
+    ]
   },
   {
-    id: "dunes",
-    name: "Dune System",
-    icon: "DN",
-    type: "Hybrid",
-    description: "Sand dunes and native vegetation that buffer surge while preserving beach access.",
-    costPerKm: 6,
-    maintenance: 0.38,
-    protection: 5.9,
-    biodiversity: 6.1,
-    carbon: 3.2,
-    equity: 8.2,
-    speed: 7.6
-  },
-  {
-    id: "wetlands",
-    name: "Tidal Wetland",
-    icon: "TW",
-    type: "Nature-based",
-    description: "Marsh restoration that stores floodwater, filters runoff, and expands coastal habitat.",
-    costPerKm: 9,
-    maintenance: 0.24,
-    protection: 6.4,
-    biodiversity: 9.1,
-    carbon: 7.6,
-    equity: 7.7,
-    speed: 5.1
-  },
-  {
-    id: "seawall",
-    name: "Adaptive Seawall",
-    icon: "SW",
-    type: "Gray infrastructure",
-    description: "Hard defense for dense asset zones where immediate flood protection is the priority.",
-    costPerKm: 22,
-    maintenance: 0.72,
-    protection: 9.3,
-    biodiversity: 1.8,
-    carbon: 1.1,
-    equity: 4.8,
-    speed: 8.2
+    id: "sheep",
+    name: "Sheep",
+    summary:
+      "A sheep resource atlas for wool, meat, bones, lanolin, manure, and small-farm education pathways.",
+    imageAsset: "assets/farm-atlas/sheep.png",
+    stewardshipNotes: [
+      "Sort wool by quality before it is mixed or contaminated.",
+      "Plan freezer, fiber, and compost channels around seasonal farm rhythms.",
+      "Use clear customer education for less familiar cuts and fiber grades."
+    ],
+    regions: [
+      {
+        id: "wool",
+        label: "Wool fleece",
+        position: { x: 55, y: 42 },
+        wasteReductionTip: "Skirt and sort wool early so clean fleece, seconds, and compost-grade fiber do not mix.",
+        uses: [
+          {
+            title: "Yarn, batting, and roving",
+            category: "Craft/material",
+            description: "Send quality fleece to a mill or local fiber artist for yarn, roving, felt, or batting.",
+            resourceRespectNote: "Sorting protects the value of the best fiber."
+          },
+          {
+            title: "Garden mulch trials",
+            category: "Farm inputs",
+            description: "Lower-grade wool can be tested as mulch, weed suppression, or moisture-retention material.",
+            resourceRespectNote: "Trial small areas first and record results."
+          },
+          {
+            title: "Compost carbon balance",
+            category: "Compost/soil",
+            description: "Waste wool can enter compost slowly when mixed with active material and enough moisture.",
+            resourceRespectNote: "Slow breakdown still has value when planned."
+          }
+        ]
+      },
+      {
+        id: "meat",
+        label: "Meat cuts",
+        position: { x: 64, y: 58 },
+        wasteReductionTip: "Use cut sheets that balance roasts, chops, stew meat, trim, and bones.",
+        uses: [
+          {
+            title: "Fresh and frozen lamb or mutton",
+            category: "Food",
+            description: "Plan retail cuts, mixed boxes, or family shares based on local demand and freezer capacity.",
+            resourceRespectNote: "Demand-based cutting reduces slow-moving inventory."
+          },
+          {
+            title: "Stew and ground bundles",
+            category: "Food",
+            description: "Group trim and tougher cuts into practical meal bundles with simple cooking notes.",
+            resourceRespectNote: "Useful instructions make every cut more likely to be eaten."
+          },
+          {
+            title: "Bones for stock",
+            category: "Food",
+            description: "Package bones for broth, soups, or traditional recipes where customers want them.",
+            resourceRespectNote: "A clear label can turn bones into a requested product."
+          }
+        ]
+      },
+      {
+        id: "lanolin-hide",
+        label: "Lanolin and hide",
+        position: { x: 38, y: 38 },
+        wasteReductionTip: "Identify whether fiber, hide, or lanolin recovery makes sense at your scale before committing storage space.",
+        uses: [
+          {
+            title: "Lanolin learning pathway",
+            category: "Craft/material",
+            description: "Track greasy wool quantities for possible lanolin, soap, or salve partnerships.",
+            resourceRespectNote: "Partnerships can make small streams viable."
+          },
+          {
+            title: "Sheepskin partner",
+            category: "Craft/material",
+            description: "Arrange a qualified hide or sheepskin processor if quality, timing, and regulations allow.",
+            resourceRespectNote: "The best use is the one you can handle well and consistently."
+          },
+          {
+            title: "Fiber system display",
+            category: "Education",
+            description: "Use wool grades and samples to explain the path from animal care to finished material.",
+            resourceRespectNote: "Visual learning reinforces resource respect."
+          }
+        ]
+      },
+      {
+        id: "manure",
+        label: "Manure and bedding",
+        position: { x: 76, y: 77 },
+        wasteReductionTip: "Plan bedding, manure, and compost as one nutrient-management stream.",
+        uses: [
+          {
+            title: "Composted pasture fertility",
+            category: "Compost/soil",
+            description: "Combine manure and bedding into compost for pasture, orchard, or garden fertility planning.",
+            resourceRespectNote: "Compost connects animal care to soil care."
+          },
+          {
+            title: "Nutrient cycling record",
+            category: "Farm inputs",
+            description: "Track bedding volume, pile temperature, and field application timing.",
+            resourceRespectNote: "Records help avoid both nutrient waste and over-application."
+          },
+          {
+            title: "Farm tour example",
+            category: "Education",
+            description: "Show how shelter bedding becomes compost and returns to the farm landscape.",
+            resourceRespectNote: "A simple loop is often the clearest sustainability lesson."
+          }
+        ]
+      }
+    ]
   }
 ];
 
-const controls = {
-  projectName: document.querySelector("#projectName"),
-  region: document.querySelector("#region"),
-  horizon: document.querySelector("#horizon"),
-  coastline: document.querySelector("#coastline"),
-  population: document.querySelector("#population"),
-  assetValue: document.querySelector("#assetValue"),
-  stormRisk: document.querySelector("#stormRisk"),
-  seaRise: document.querySelector("#seaRise"),
-  budget: document.querySelector("#budget"),
-  weightProtection: document.querySelector("#weightProtection"),
-  weightEcology: document.querySelector("#weightEcology"),
-  weightCost: document.querySelector("#weightCost")
+const elements = {
+  animalGrid: document.querySelector("#animalGrid"),
+  atlasTitle: document.querySelector("#atlasTitle"),
+  animalImage: document.querySelector("#animalImage"),
+  animalSummary: document.querySelector("#animalSummary"),
+  regionMarkers: document.querySelector("#regionMarkers"),
+  regionTitle: document.querySelector("#regionTitle"),
+  regionTip: document.querySelector("#regionTip"),
+  useList: document.querySelector("#useList"),
+  planList: document.querySelector("#planList"),
+  savedCount: document.querySelector("#savedCount"),
+  toast: document.querySelector("#toast"),
+  viewPlanBtn: document.querySelector("#viewPlanBtn"),
+  exportBtn: document.querySelector("#exportBtn"),
+  copyPlanBtn: document.querySelector("#copyPlanBtn"),
+  clearPlanBtn: document.querySelector("#clearPlanBtn"),
+  printBtn: document.querySelector("#printBtn")
 };
 
-const outputs = {
-  coastlineOut: document.querySelector("#coastlineOut"),
-  populationOut: document.querySelector("#populationOut"),
-  assetValueOut: document.querySelector("#assetValueOut"),
-  stormRiskOut: document.querySelector("#stormRiskOut"),
-  seaRiseOut: document.querySelector("#seaRiseOut"),
-  budgetOut: document.querySelector("#budgetOut"),
-  totalCost: document.querySelector("#totalCost"),
-  budgetStatus: document.querySelector("#budgetStatus"),
-  protectionGain: document.querySelector("#protectionGain"),
-  naturalCapital: document.querySelector("#naturalCapital"),
-  avoidedLoss: document.querySelector("#avoidedLoss"),
-  payback: document.querySelector("#payback"),
-  heroProtection: document.querySelector("#heroProtection"),
-  heroCapital: document.querySelector("#heroCapital"),
-  heroLoss: document.querySelector("#heroLoss"),
-  budgetBadge: document.querySelector("#budgetBadge"),
-  mapTitle: document.querySelector("#mapTitle"),
-  tileLayer: document.querySelector("#tileLayer"),
-  coordinateChip: document.querySelector("#coordinateChip"),
-  bleachOverlay: document.querySelector("#bleachOverlay"),
-  statusPill: document.querySelector("#statusPill"),
-  recommendationList: document.querySelector("#recommendationList"),
-  solutionGrid: document.querySelector("#solutionGrid"),
-  tradeoffText: document.querySelector("#tradeoffText"),
-  briefText: document.querySelector("#briefText")
-};
+let selectedAnimalId = animals[0].id;
+let selectedRegionId = animals[0].regions[0].id;
+let savedUses = restoreSavedUses();
 
-const formatter = new Intl.NumberFormat("en-US");
-let selected = new Set(["mangroves", "wetlands", "dunes"]);
-let mapState = {
-  zoom: 8,
-  lat: 25.7617,
-  lon: -80.1918
-};
-
-const regionCenters = {
-  "Gulf Coast": { lat: 25.7617, lon: -80.1918, zoom: 8 },
-  "Atlantic Coast": { lat: 34.6851, lon: -76.621, zoom: 8 },
-  "Pacific Coast": { lat: 37.7749, lon: -122.4194, zoom: 8 },
-  "Great Lakes": { lat: 41.8781, lon: -87.6298, zoom: 8 },
-  "Island Community": { lat: 18.2208, lon: -66.5901, zoom: 8 }
-};
-
-function money(value) {
-  return `$${Math.round(value).toLocaleString("en-US")}M`;
+function getAnimal(id = selectedAnimalId) {
+  return animals.find((animal) => animal.id === id) || animals[0];
 }
 
-function lonToTile(lon, zoom) {
-  return Math.floor(((lon + 180) / 360) * 2 ** zoom);
+function getRegion(animal = getAnimal(), id = selectedRegionId) {
+  return animal.regions.find((region) => region.id === id) || animal.regions[0];
 }
 
-function latToTile(lat, zoom) {
-  const radians = lat * Math.PI / 180;
-  return Math.floor(((1 - Math.log(Math.tan(radians) + 1 / Math.cos(radians)) / Math.PI) / 2) * 2 ** zoom);
+function useKey(animalId, regionId, title) {
+  return `${animalId}:${regionId}:${title}`;
 }
 
-function renderTiles() {
-  if (!outputs.tileLayer) return;
-  const centerX = lonToTile(mapState.lon, mapState.zoom);
-  const centerY = latToTile(mapState.lat, mapState.zoom);
-  const columns = 5;
-  const rows = 4;
-  const tiles = [];
+function regionFocusStyle(region) {
+  return `--focus-x:${region.position.x}%; --focus-y:${region.position.y}%`;
+}
 
-  for (let row = 0; row < rows; row += 1) {
-    for (let column = 0; column < columns; column += 1) {
-      const x = centerX + column - Math.floor(columns / 2);
-      const y = centerY + row - Math.floor(rows / 2);
-      tiles.push(`<img class="map-tile" alt="" src="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/${mapState.zoom}/${y}/${x}" />`);
-    }
+function restoreSavedUses() {
+  try {
+    return new Set(JSON.parse(localStorage.getItem(STORAGE_KEY)) || []);
+  } catch {
+    localStorage.removeItem(STORAGE_KEY);
+    return new Set();
   }
-
-  outputs.tileLayer.innerHTML = tiles.join("");
-  outputs.coordinateChip.textContent = `${mapState.lat.toFixed(4)}, ${mapState.lon.toFixed(4)} · z${mapState.zoom}`;
 }
 
-function renderBleachOverlay(state) {
-  if (!outputs.bleachOverlay) return;
-  const intensity = Math.min(1, (state.stormRisk / 35 + state.seaRise / 120) / 1.55);
-  const points = [
-    [218, 512, 0.38], [271, 455, 0.52], [355, 407, 0.72], [492, 365, 0.44],
-    [621, 315, 0.66], [753, 279, 0.88], [833, 271, 0.61], [930, 218, 0.92],
-    [1003, 162, 0.8], [902, 458, 0.57], [762, 548, 0.46], [588, 617, 0.71],
-    [424, 548, 0.54], [314, 615, 0.86], [1028, 383, 0.64]
-  ];
-
-  outputs.bleachOverlay.innerHTML = points.map(([x, y, base], index) => {
-    const risk = Math.min(1, base * 0.55 + intensity * 0.65);
-    const color = risk > 0.75 ? "#df1f2d" : risk > 0.55 ? "#ff7b22" : "#f7e84a";
-    const radius = Math.round(7 + risk * 17 + (index % 3) * 2);
-    return `<circle cx="${x}" cy="${y}" r="${radius}" fill="${color}" opacity="${0.34 + risk * 0.4}" />`;
-  }).join("");
+function persistSavedUses() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify([...savedUses]));
 }
 
-function getState() {
-  return {
-    projectName: controls.projectName.value,
-    region: controls.region.value,
-    horizon: Number(controls.horizon.value),
-    coastline: Number(controls.coastline.value),
-    population: Number(controls.population.value),
-    assetValue: Number(controls.assetValue.value),
-    stormRisk: Number(controls.stormRisk.value),
-    seaRise: Number(controls.seaRise.value),
-    budget: Number(controls.budget.value),
-    weightProtection: Number(controls.weightProtection.value),
-    weightEcology: Number(controls.weightEcology.value),
-    weightCost: Number(controls.weightCost.value),
-    selected: [...selected]
-  };
+function showToast(message) {
+  elements.toast.textContent = message;
+  elements.toast.classList.add("show");
+  window.clearTimeout(showToast.timer);
+  showToast.timer = window.setTimeout(() => elements.toast.classList.remove("show"), 1700);
 }
 
-function modelPortfolio(state) {
-  const active = solutions.filter((solution) => selected.has(solution.id));
-  const lengthFactor = Math.max(0.35, Math.min(1, state.coastline / 18));
-  const cost = active.reduce((sum, solution) => sum + solution.costPerKm * state.coastline * lengthFactor, 0);
-  const maintenance = active.reduce((sum, solution) => sum + solution.maintenance * state.coastline, 0);
-  const rawProtection = active.reduce((sum, solution) => sum + solution.protection, 0);
-  const protection = Math.min(86, rawProtection * 5.4 * (1 - state.seaRise / 260));
-  const biodiversity = active.length ? active.reduce((sum, solution) => sum + solution.biodiversity, 0) / active.length : 0;
-  const carbon = active.reduce((sum, solution) => sum + solution.carbon * state.coastline * 0.42, 0);
-  const equity = active.length ? active.reduce((sum, solution) => sum + solution.equity, 0) / active.length : 0;
-  const annualRisk = state.assetValue * (state.stormRisk / 100) * (1 + state.seaRise / 160);
-  const avoidedLoss = annualRisk * (protection / 100) * state.horizon;
-  const paybackYears = avoidedLoss > 0 ? cost / (avoidedLoss / state.horizon) : null;
-  const naturalCapital = Math.round(biodiversity * 7 + carbon / 3 + equity * 2);
-
-  return {
-    active,
-    cost,
-    maintenance,
-    protection,
-    biodiversity,
-    carbon,
-    equity,
-    avoidedLoss,
-    paybackYears,
-    naturalCapital
-  };
-}
-
-function scoreSolution(solution, state) {
-  const affordability = Math.max(0, 10 - (solution.costPerKm * state.coastline * 0.8) / Math.max(1, state.budget) * 10);
-  const ecology = (solution.biodiversity + solution.carbon) / 2;
-  const maintenanceEase = 10 - solution.maintenance * 10;
-  const weighted =
-    solution.protection * state.weightProtection +
-    ecology * state.weightEcology +
-    affordability * state.weightCost +
-    solution.equity * 1.4 +
-    maintenanceEase;
-
-  return Math.round((weighted / (Number(state.weightProtection) + Number(state.weightEcology) + Number(state.weightCost) + 2.4)) * 10);
-}
-
-function renderSolutions(state) {
-  outputs.solutionGrid.innerHTML = solutions
-    .map((solution) => {
-      const isSelected = selected.has(solution.id);
+function renderAnimalGrid() {
+  elements.animalGrid.innerHTML = animals
+    .map((animal) => {
+      const savedForAnimal = [...savedUses].filter((key) => key.startsWith(`${animal.id}:`)).length;
       return `
-        <article class="solution-card ${isSelected ? "selected" : ""}">
-          <div class="card-top">
-            <div class="solution-icon">${solution.icon}</div>
-            <button class="toggle ${isSelected ? "on" : ""}" data-id="${solution.id}" aria-label="Toggle ${solution.name}"></button>
-          </div>
-          <div>
-            <h4>${solution.name}</h4>
-            <p>${solution.description}</p>
-          </div>
-          <div class="solution-meta">
-            <span><b>${solution.type}</b></span>
-            <span>Capital cost: <b>${money(solution.costPerKm)}/km</b></span>
-            <span>Protection: <b>${solution.protection.toFixed(1)}/10</b></span>
-            <span>Ecology: <b>${solution.biodiversity.toFixed(1)}/10</b></span>
-            <span>Fit score: <b>${scoreSolution(solution, state)}/100</b></span>
-          </div>
-        </article>
+        <button class="animal-card ${animal.id === selectedAnimalId ? "active" : ""}" type="button" data-animal-id="${animal.id}">
+          <span class="animal-image-wrap">
+            <img src="${animal.imageAsset}" alt="Illustrated ${animal.name.toLowerCase()}" />
+          </span>
+          <span class="animal-card-copy">
+            <span>
+              <strong>${animal.name}</strong>
+              <small>${animal.regions.length} regions · ${savedForAnimal} saved</small>
+            </span>
+            <em>Open atlas</em>
+          </span>
+        </button>
       `;
     })
     .join("");
 
-  document.querySelectorAll(".toggle").forEach((button) => {
+  document.querySelectorAll("[data-animal-id]").forEach((button) => {
     button.addEventListener("click", () => {
-      const id = button.dataset.id;
-      if (selected.has(id)) {
-        selected.delete(id);
-      } else {
-        selected.add(id);
-      }
+      selectedAnimalId = button.dataset.animalId;
+      selectedRegionId = getAnimal().regions[0].id;
       render();
     });
   });
 }
 
-function renderRecommendations(state) {
-  const ranked = [...solutions]
-    .map((solution) => ({ ...solution, score: scoreSolution(solution, state) }))
-    .sort((a, b) => b.score - a.score);
+function renderAtlas() {
+  const animal = getAnimal();
+  const region = getRegion(animal);
+  elements.atlasTitle.textContent = animal.name;
+  elements.animalImage.src = animal.imageAsset;
+  elements.animalImage.alt = `Illustrated ${animal.name.toLowerCase()}`;
+  elements.animalSummary.textContent = animal.summary;
 
-  outputs.recommendationList.innerHTML = ranked
-    .slice(0, 5)
-    .map((solution, index) => `
-      <article class="recommendation">
-        <div class="rank">${index + 1}</div>
-        <div>
-          <h4>${solution.name}</h4>
-          <p>${solution.type} option with ${solution.protection.toFixed(1)}/10 protection and ${solution.biodiversity.toFixed(1)}/10 biodiversity value.</p>
-        </div>
-        <div class="score">${solution.score}</div>
-      </article>
-    `)
+  elements.regionMarkers.innerHTML = animal.regions
+    .map(
+      (item) => `
+        <button
+          class="region-marker ${item.id === region.id ? "active" : ""}"
+          type="button"
+          style="left:${item.position.x}%; top:${item.position.y}%"
+          data-region-id="${item.id}"
+          aria-label="Open ${item.label}"
+        >
+          <span>${item.label}</span>
+        </button>
+      `
+    )
     .join("");
-}
 
-function renderBrief(state, model) {
-  const names = model.active.map((solution) => solution.name).join(", ") || "no interventions selected";
-  const budgetLine = model.cost <= state.budget
-    ? `The selected portfolio is within the available ${money(state.budget)} capital budget.`
-    : `The selected portfolio exceeds the ${money(state.budget)} capital budget by ${money(model.cost - state.budget)}.`;
-
-  outputs.tradeoffText.textContent =
-    `This portfolio leans ${model.biodiversity >= 7 ? "strongly toward nature-positive resilience" : "toward hard protection"} with ${Math.round(model.protection)}% modeled protection gain, ${Math.round(model.carbon)} blue-carbon index points, and ${money(model.maintenance)} in annual maintenance.`;
-
-  outputs.briefText.innerHTML = `
-    <p><b>${state.projectName}</b> evaluates ${state.coastline} km of coastline in the ${state.region} over a ${state.horizon}-year planning horizon.</p>
-    <p>The current portfolio includes ${names}. It is modeled to deliver <b>${Math.round(model.protection)}%</b> flood-risk reduction, <b>${model.naturalCapital}</b> natural-capital index points, and <b>${money(model.avoidedLoss)}</b> in avoided losses across the planning period.</p>
-    <p>${budgetLine} Annual maintenance is estimated at <b>${money(model.maintenance)}</b>, with an implied payback of <b>${model.paybackYears ? model.paybackYears.toFixed(1) + " years" : "not available"}</b>.</p>
-    <p>Recommended next step: commission parcel-level feasibility for the top-ranked nature-based options, then reserve hard infrastructure for dense asset zones where immediate protection needs exceed habitat-based performance.</p>
-  `;
-}
-
-function renderMetrics(state, model) {
-  outputs.coastlineOut.value = `${state.coastline} km`;
-  outputs.populationOut.value = formatter.format(state.population);
-  outputs.assetValueOut.value = money(state.assetValue);
-  outputs.stormRiskOut.value = `${state.stormRisk}%`;
-  outputs.seaRiseOut.value = `${state.seaRise} cm`;
-  outputs.budgetOut.value = money(state.budget);
-  outputs.totalCost.textContent = money(model.cost);
-  outputs.budgetStatus.textContent = model.cost <= state.budget ? "Within budget" : `${money(model.cost - state.budget)} over budget`;
-  outputs.protectionGain.textContent = `${Math.round(model.protection)}%`;
-  outputs.naturalCapital.textContent = model.naturalCapital;
-  outputs.avoidedLoss.textContent = money(model.avoidedLoss);
-  outputs.payback.textContent = model.paybackYears ? `${model.paybackYears.toFixed(1)} year payback` : "Payback not available";
-  if (outputs.heroProtection) outputs.heroProtection.textContent = `${Math.round(model.protection)}%`;
-  if (outputs.heroCapital) outputs.heroCapital.textContent = model.naturalCapital;
-  if (outputs.heroLoss) outputs.heroLoss.textContent = money(model.avoidedLoss);
-  outputs.budgetBadge.textContent = `${money(model.cost)} selected`;
-  outputs.mapTitle.textContent = state.projectName.split(" ").slice(0, 3).join(" ");
-  renderBleachOverlay(state);
-}
-
-function render() {
-  const state = getState();
-  const model = modelPortfolio(state);
-  renderMetrics(state, model);
-  renderSolutions(state);
-  renderRecommendations(state);
-  renderBrief(state, model);
-  persist(false);
-}
-
-function persist(showStatus = true) {
-  localStorage.setItem("tidewise-state", JSON.stringify(getState()));
-  if (showStatus) {
-    outputs.statusPill.textContent = "Saved locally";
-    setTimeout(() => {
-      outputs.statusPill.textContent = "Autosave on";
-    }, 1600);
-  }
-}
-
-function restore() {
-  const saved = localStorage.getItem("tidewise-state");
-  if (!saved) return;
-  try {
-    const state = JSON.parse(saved);
-    Object.entries(controls).forEach(([key, control]) => {
-      if (state[key] !== undefined) control.value = state[key];
+  document.querySelectorAll("[data-region-id]").forEach((button) => {
+    button.addEventListener("click", () => {
+      selectedRegionId = button.dataset.regionId;
+      render();
     });
-    selected = new Set(state.selected || [...selected]);
-  } catch {
-    localStorage.removeItem("tidewise-state");
-  }
+  });
+
+  elements.regionTitle.textContent = region.label;
+  elements.regionTip.textContent = region.wasteReductionTip;
+  elements.useList.innerHTML = `
+    <div class="assistant-bubble">
+      <span>Atlas assistant</span>
+      <p>I found ${region.uses.length} practical pathways for ${animal.name.toLowerCase()} ${region.label.toLowerCase()}. Start with the visual focus, then add the options that fit your farm plan.</p>
+    </div>
+    <figure class="region-visual" style="${regionFocusStyle(region)}">
+      <img src="${animal.imageAsset}" alt="${animal.name} visual focus on ${region.label.toLowerCase()}" />
+      <figcaption>
+        <span>${animal.name}</span>
+        <strong>${region.label}</strong>
+      </figcaption>
+      <i aria-hidden="true"></i>
+    </figure>
+  ` + region.uses
+    .map((use) => {
+      const key = useKey(animal.id, region.id, use.title);
+      const isSaved = savedUses.has(key);
+      return `
+        <article class="use-card" style="${regionFocusStyle(region)}">
+          <div class="use-visual" aria-hidden="true">
+            <img src="${animal.imageAsset}" alt="" />
+            <span>${region.label}</span>
+          </div>
+          <div class="use-card-top">
+            <span class="category">${use.category}</span>
+            <button class="save-button ${isSaved ? "saved" : ""}" type="button" data-use-key="${key}">
+              ${isSaved ? "Added" : "Add"}
+            </button>
+          </div>
+          <h4>${use.title}</h4>
+          <p>${use.description}</p>
+          <small>${use.resourceRespectNote}</small>
+        </article>
+      `;
+    })
+    .join("");
+
+  document.querySelectorAll("[data-use-key]").forEach((button) => {
+    button.addEventListener("click", () => {
+      if (savedUses.has(button.dataset.useKey)) {
+        savedUses.delete(button.dataset.useKey);
+        showToast("Removed from plan");
+      } else {
+        savedUses.add(button.dataset.useKey);
+        showToast("Saved to plan");
+      }
+      persistSavedUses();
+      render();
+    });
+  });
 }
 
-function exportJson() {
-  const state = getState();
-  const model = modelPortfolio(state);
+function getSavedPlanItems() {
+  const items = [];
+  animals.forEach((animal) => {
+    animal.regions.forEach((region) => {
+      region.uses.forEach((use) => {
+        const key = useKey(animal.id, region.id, use.title);
+        if (savedUses.has(key)) {
+          items.push({
+            key,
+            animal: animal.name,
+            region: region.label,
+            title: use.title,
+            category: use.category,
+            description: use.description,
+            note: use.resourceRespectNote,
+            wasteReductionTip: region.wasteReductionTip
+          });
+        }
+      });
+    });
+  });
+  return items;
+}
+
+function renderPlan() {
+  const items = getSavedPlanItems();
+  elements.savedCount.textContent = `${items.length} saved`;
+
+  if (!items.length) {
+    elements.planList.innerHTML = `
+      <div class="empty-plan">
+        <strong>No saved uses yet.</strong>
+        <p>Tap animal regions and save the pathways that fit your farm.</p>
+      </div>
+    `;
+    return;
+  }
+
+  elements.planList.innerHTML = items
+    .map(
+      (item) => `
+        <article class="plan-item">
+          <div>
+            <span class="category">${item.animal} · ${item.region}</span>
+            <h3>${item.title}</h3>
+            <p>${item.description}</p>
+            <small>${item.note}</small>
+          </div>
+          <button class="remove-button" type="button" data-remove-key="${item.key}" aria-label="Remove ${item.title}">Remove</button>
+        </article>
+      `
+    )
+    .join("");
+
+  document.querySelectorAll("[data-remove-key]").forEach((button) => {
+    button.addEventListener("click", () => {
+      savedUses.delete(button.dataset.removeKey);
+      persistSavedUses();
+      showToast("Removed from plan");
+      render();
+    });
+  });
+}
+
+function planSummaryText() {
+  const items = getSavedPlanItems();
+  if (!items.length) return "Farm Resource Atlas plan: no saved use cases yet.";
+  return [
+    "Farm Resource Atlas resource plan",
+    `Saved use cases: ${items.length}`,
+    "",
+    ...items.map(
+      (item, index) =>
+        `${index + 1}. ${item.animal} - ${item.region} - ${item.title}\nCategory: ${item.category}\nUse: ${item.description}\nRespect note: ${item.note}`
+    )
+  ].join("\n\n");
+}
+
+function exportPlan() {
   const payload = {
+    product: "Farm Resource Atlas",
     exportedAt: new Date().toISOString(),
-    product: "Tidewise Resilience Studio",
-    state,
-    model
+    savedUseCases: getSavedPlanItems(),
+    stewardshipNotes: animals.map((animal) => ({
+      animal: animal.name,
+      notes: animal.stewardshipNotes
+    }))
   };
   const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.download = "tidewise-scenario.json";
+  link.download = "farm-resource-plan.json";
   link.click();
   URL.revokeObjectURL(url);
+  showToast("Plan exported");
 }
 
-Object.values(controls).forEach((control) => {
-  control.addEventListener("input", render);
-  control.addEventListener("change", render);
-});
+async function copyPlanSummary() {
+  const summary = planSummaryText();
+  if (navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(summary);
+  } else {
+    const textArea = document.createElement("textarea");
+    textArea.value = summary;
+    textArea.setAttribute("readonly", "");
+    textArea.style.position = "fixed";
+    textArea.style.opacity = "0";
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand("copy");
+    textArea.remove();
+  }
+  showToast("Plan summary copied");
+}
 
-controls.region.addEventListener("change", () => {
-  mapState = { ...mapState, ...regionCenters[controls.region.value] };
-  renderTiles();
-});
+function render() {
+  renderAnimalGrid();
+  renderAtlas();
+  renderPlan();
+}
 
-document.querySelectorAll("[data-layer]").forEach((toggle) => {
-  toggle.addEventListener("change", () => {
-    const layer = document.querySelector(`#${toggle.dataset.layer}`);
-    if (layer) layer.classList.toggle("hidden-layer", !toggle.checked);
-  });
+elements.viewPlanBtn.addEventListener("click", () => {
+  document.querySelector("#planPanel").scrollIntoView({ behavior: "smooth", block: "start" });
 });
-
-document.querySelector("#zoomInBtn").addEventListener("click", () => {
-  mapState.zoom = Math.min(12, mapState.zoom + 1);
-  renderTiles();
+elements.exportBtn.addEventListener("click", exportPlan);
+elements.copyPlanBtn.addEventListener("click", copyPlanSummary);
+elements.clearPlanBtn.addEventListener("click", () => {
+  savedUses = new Set();
+  persistSavedUses();
+  showToast("Plan cleared");
+  render();
 });
+elements.printBtn.addEventListener("click", () => window.print());
 
-document.querySelector("#zoomOutBtn").addEventListener("click", () => {
-  mapState.zoom = Math.max(5, mapState.zoom - 1);
-  renderTiles();
-});
-
-document.querySelectorAll("[data-map-style]").forEach((button) => {
-  button.addEventListener("click", () => {
-    document.querySelectorAll("[data-map-style]").forEach((item) => item.classList.remove("active"));
-    button.classList.add("active");
-    document.querySelector(".real-map-panel").className = `real-map-panel map-style-${button.dataset.mapStyle}`;
-  });
-});
-
-document.querySelector("#saveBtn").addEventListener("click", () => persist(true));
-document.querySelector("#exportBtn").addEventListener("click", exportJson);
-document.querySelector("#printBtn").addEventListener("click", () => window.print());
-document.querySelector("#copyBriefBtn").addEventListener("click", async () => {
-  const text = outputs.briefText.textContent.trim().replace(/\s+/g, " ");
-  await navigator.clipboard.writeText(text);
-  outputs.statusPill.textContent = "Brief copied";
-});
-
-restore();
-mapState = { ...mapState, ...regionCenters[controls.region.value] };
-renderTiles();
 render();

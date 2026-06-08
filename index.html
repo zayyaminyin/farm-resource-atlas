@@ -3,278 +3,110 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tidewise Resilience Studio</title>
-    <meta name="theme-color" content="#081629" />
+    <title>Farm Resource Atlas</title>
+    <meta name="theme-color" content="#071211" />
+    <meta
+      name="description"
+      content="A mobile-first farm sustainability atlas for planning respectful, low-waste use pathways."
+    />
     <link rel="manifest" href="manifest.webmanifest" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="atlas-shell">
-      <header class="atlas-header">
-        <div class="brand-lockup">
-          <div class="brand-mark">TW</div>
-          <div>
-            <h1>Tidewise Resilience Studio</h1>
-            <p>Coastal atlas for natural-capital infrastructure decisions</p>
-          </div>
-        </div>
-        <nav class="top-links" aria-label="Primary">
-          <a href="#map">Atlas</a>
-          <a href="#portfolio">Portfolio</a>
-          <a href="#brief">Science Brief</a>
-          <button id="saveBtn">Save</button>
-          <button id="exportBtn">Export</button>
-          <button id="printBtn">Print</button>
+    <div class="app-shell">
+      <header class="app-header">
+        <nav class="tool-cluster" aria-label="Atlas tools">
+          <button type="button" title="Controls" aria-label="Controls">☷</button>
+          <button type="button" title="Search" aria-label="Search">⌕</button>
+          <button type="button" title="Back" aria-label="Back">↶</button>
+          <button type="button" title="Info" aria-label="Info">i</button>
         </nav>
+        <a class="brand" href="#top" aria-label="Farm Resource Atlas home">
+          <span class="brand-mark">FA</span>
+          <span>
+            <strong>Farm Resource Atlas</strong>
+            <small>GenAI sustainability atlas</small>
+          </span>
+        </a>
+        <button id="printBtn" class="header-action" type="button" title="Print plan" aria-label="Print plan">⎙</button>
       </header>
 
-      <section class="map-command-bar" aria-label="Map command controls">
-        <div class="search-strip">
-          <span class="search-icon">⌕</span>
-          <input id="projectName" type="text" value="Harbor District Resilience Plan" aria-label="Project name" />
-          <select id="region" aria-label="Region">
-            <option>Gulf Coast</option>
-            <option>Atlantic Coast</option>
-            <option>Pacific Coast</option>
-            <option>Great Lakes</option>
-            <option>Island Community</option>
-          </select>
-        </div>
-        <div class="mode-tabs" aria-label="Map modes">
-          <button class="active">Satellite Reef Imagery</button>
-          <button>Flood Exposure</button>
-          <button>Natural Capital</button>
-        </div>
-        <div class="status-pill" id="statusPill">Live atlas ready</div>
-      </section>
-
-      <main id="map" class="map-stage">
-        <aside class="left-tools" aria-label="Map tools">
-          <button id="zoomInBtn" title="Zoom in">+</button>
-          <button id="zoomOutBtn" title="Zoom out">−</button>
-          <button title="Draw planning area">□</button>
-          <button title="Measure coastline">⌁</button>
-          <button title="Share view">↗</button>
-        </aside>
-
-        <section class="real-map-panel" aria-label="Real satellite map">
-          <div id="tileLayer" class="tile-layer"></div>
-          <div class="spectral-water"></div>
-          <div class="scan-beam"></div>
-          <svg class="map-overlays" viewBox="0 0 1200 760" preserveAspectRatio="none" aria-hidden="true">
-            <defs>
-              <filter id="glow">
-                <feGaussianBlur stdDeviation="3.5" result="coloredBlur" />
-                <feMerge>
-                  <feMergeNode in="coloredBlur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-              <linearGradient id="riskGradient" x1="0%" x2="100%" y1="0%" y2="0%">
-                <stop offset="0%" stop-color="#f7e84a" stop-opacity="0.15" />
-                <stop offset="52%" stop-color="#ff7b22" stop-opacity="0.42" />
-                <stop offset="100%" stop-color="#df1f2d" stop-opacity="0.28" />
-              </linearGradient>
-            </defs>
-            <g class="bathymetry-lines">
-              <path d="M92,205 C223,150 355,176 459,238 C564,302 684,321 821,258 C930,208 1027,209 1130,273" />
-              <path d="M61,338 C193,281 324,294 450,359 C574,423 713,452 866,398 C980,358 1065,382 1167,455" />
-              <path d="M49,500 C180,436 319,454 452,530 C581,604 734,634 887,579 C1003,536 1082,548 1174,614" />
-              <path d="M202,79 C326,67 445,112 555,174 C678,244 804,223 941,149" />
-            </g>
-            <path id="reefOverlay" class="reef-line" d="M135,584 C218,520 260,432 348,401 C438,370 518,416 598,352 C681,286 751,249 842,263 C957,280 1000,194 1092,122" />
-            <path id="floodOverlay" class="flood-zone" d="M778,96 C909,118 1020,194 1062,298 C1106,407 1060,536 954,609 C830,696 646,687 533,592 C423,500 401,350 468,232 C529,127 654,74 778,96Z" />
-            <path id="habitatOverlay" class="habitat-zone" d="M115,619 C196,564 263,498 336,493 C410,489 464,564 540,545 C641,520 672,404 768,383 C860,363 948,423 1028,380 L1066,438 C964,505 884,482 794,529 C696,581 638,664 512,662 C401,660 345,586 252,621 C198,641 158,670 106,684Z" />
-            <g id="assetOverlay" class="asset-points">
-              <circle cx="886" cy="212" r="8" />
-              <circle cx="982" cy="339" r="7" />
-              <circle cx="713" cy="465" r="7" />
-              <circle cx="589" cy="577" r="8" />
-              <circle cx="423" cy="438" r="6" />
-            </g>
-            <g id="bleachOverlay" class="bleach-points"></g>
-          </svg>
-
-          <div class="hero-title-card">
-            <span class="eyebrow">Live Coastal Intelligence Atlas</span>
-            <h2>Tidewise scans real coastal imagery for resilience opportunities.</h2>
-            <div class="hero-stat-row">
-              <span><b id="heroProtection">86%</b> protection gain</span>
-              <span><b id="heroCapital">114</b> natural capital</span>
-              <span><b id="heroLoss">$2.6B</b> avoided loss</span>
-            </div>
+      <main id="top">
+        <section class="hero-section" aria-labelledby="heroTitle">
+          <div class="hero-copy">
+            <p class="eyebrow">Ask the atlas</p>
+            <h1 id="heroTitle">Map every resource pathway with a visual AI guide.</h1>
+            <p>
+              Choose an animal, tap a highlighted region, and let the atlas explain practical low-waste uses in a chat-style workspace.
+            </p>
           </div>
-
-          <div class="map-style-dock" aria-label="Map styles">
-            <button class="active" data-map-style="satellite">Satellite</button>
-            <button data-map-style="thermal">Thermal</button>
-            <button data-map-style="bathymetry">Bathymetry</button>
-            <button data-map-style="planning">Planning</button>
+          <div class="prompt-card" aria-label="Example prompt">
+            <span>Resource prompt</span>
+            <strong>What can this body region become?</strong>
           </div>
-
-          <div class="inspector-card">
-            <span class="eyebrow">Selected cell</span>
-            <h3>Reef-fringe restoration zone</h3>
-            <div class="inspector-grid">
-              <span>Wave attenuation <b>72%</b></span>
-              <span>Habitat uplift <b>+41</b></span>
-              <span>Payback <b>2.2y</b></span>
-              <span>Confidence <b>0.84</b></span>
-            </div>
+          <div class="hero-metrics" aria-label="MVP coverage">
+            <span><strong>3</strong> animals</span>
+            <span><strong>11</strong> regions</span>
+            <span><strong>33</strong> use cases</span>
           </div>
-
-          <div class="map-credit">Imagery layer: Esri World Imagery map tiles</div>
-          <div class="coordinate-chip" id="coordinateChip">25.7617, -80.1918 · z8</div>
-          <div class="scale-chip">5 km</div>
-          <div class="camera-button" aria-hidden="true">◉</div>
+          <div class="hero-actions" aria-label="Resource plan actions">
+            <button id="viewPlanBtn" class="primary-button" type="button">View plan</button>
+            <button id="exportBtn" class="secondary-button" type="button">Export JSON</button>
+          </div>
         </section>
 
-        <aside class="right-layers" aria-label="Layer controls">
-          <section class="layer-card bleaching-card">
-            <div class="layer-title">
-              <div>
-                <span>Bleaching & heat stress</span>
-                <small>Scenario model</small>
-              </div>
-              <label class="switch">
-                <input type="checkbox" data-layer="bleachOverlay" checked />
-                <span></span>
-              </label>
-            </div>
-            <p>Live-style risk clusters indicate where warming, shallow depth, and asset exposure overlap.</p>
-            <div class="date-control">
-              <button>‹</button>
-              <strong>03-Jun-2026</strong>
-              <button>›</button>
-            </div>
-            <div class="heatbar">
-              <i></i><i></i><i></i>
-            </div>
-            <div class="legend-row">
-              <span>Low</span><span>Moderate</span><span>Severe</span>
-            </div>
-          </section>
+        <section class="animal-picker" aria-labelledby="animalPickerTitle">
+          <div class="section-heading">
+            <p class="eyebrow">Choose an animal</p>
+            <h2 id="animalPickerTitle">Visual atlas</h2>
+          </div>
+          <div id="animalGrid" class="animal-grid"></div>
+        </section>
 
-          <section class="layer-stack">
-            <div class="layer-toggle">
-              <span>Reef suitability</span>
-              <label class="switch"><input type="checkbox" data-layer="reefOverlay" checked /><span></span></label>
+        <section class="atlas-workspace" aria-labelledby="atlasTitle">
+          <div class="atlas-topline">
+            <div>
+              <p class="eyebrow">Selected atlas</p>
+              <h2 id="atlasTitle">Chicken</h2>
             </div>
-            <div class="layer-toggle">
-              <span>Flood exposure</span>
-              <label class="switch"><input type="checkbox" data-layer="floodOverlay" checked /><span></span></label>
-            </div>
-            <div class="layer-toggle">
-              <span>Habitat uplift</span>
-              <label class="switch"><input type="checkbox" data-layer="habitatOverlay" checked /><span></span></label>
-            </div>
-            <div class="layer-toggle">
-              <span>Critical assets</span>
-              <label class="switch"><input type="checkbox" data-layer="assetOverlay" checked /><span></span></label>
-            </div>
-            <div class="layer-toggle">
-              <span>Base map imagery</span>
-              <label class="switch"><input type="checkbox" data-layer="tileLayer" checked /><span></span></label>
-            </div>
-          </section>
-
-          <section class="layer-card visual-stack">
-            <span class="eyebrow">Visual intelligence</span>
-            <div class="thumb-grid">
-              <div class="thumb thumb-sat"><span>Satellite</span></div>
-              <div class="thumb thumb-risk"><span>Risk</span></div>
-              <div class="thumb thumb-reef"><span>Reef</span></div>
-            </div>
-            <div class="spark-panel">
-              <span>Resilience score</span>
-              <div class="spark-bars">
-                <i style="height:42%"></i>
-                <i style="height:62%"></i>
-                <i style="height:55%"></i>
-                <i style="height:81%"></i>
-                <i style="height:74%"></i>
-                <i style="height:92%"></i>
-              </div>
-            </div>
-          </section>
-
-          <section class="layer-card project-card">
-            <span class="eyebrow">Planning horizon</span>
-            <select id="horizon">
-              <option value="10">10 years</option>
-              <option value="20" selected>20 years</option>
-              <option value="30">30 years</option>
-              <option value="50">50 years</option>
-            </select>
-            <div class="mini-stat">
-              <span>Selected capital</span>
-              <strong id="budgetBadge">$0M</strong>
-            </div>
-          </section>
-        </aside>
-
-        <section class="bottom-console">
-          <div class="scenario-panel">
-            <div class="panel-title">
-              <span class="eyebrow">Scenario model</span>
-              <h2 id="mapTitle">Harbor District</h2>
-            </div>
-            <div class="control-grid">
-              <label>Coastline <input id="coastline" type="range" min="1" max="50" value="12" /><output id="coastlineOut">12 km</output></label>
-              <label>Population <input id="population" type="range" min="1000" max="250000" step="1000" value="42000" /><output id="populationOut">42,000</output></label>
-              <label>Assets <input id="assetValue" type="range" min="50" max="5000" step="50" value="850" /><output id="assetValueOut">$850M</output></label>
-              <label>Storm risk <input id="stormRisk" type="range" min="2" max="35" value="14" /><output id="stormRiskOut">14%</output></label>
-              <label>Sea rise <input id="seaRise" type="range" min="10" max="120" value="45" /><output id="seaRiseOut">45 cm</output></label>
-              <label>Budget <input id="budget" type="range" min="10" max="1000" step="10" value="220" /><output id="budgetOut">$220M</output></label>
-            </div>
+            <span id="savedCount" class="saved-pill">0 saved</span>
           </div>
 
-          <div class="metric-grid" aria-label="Scenario metrics">
-            <article><span>Total cost</span><strong id="totalCost">$0M</strong><small id="budgetStatus">Within budget</small></article>
-            <article><span>Protection</span><strong id="protectionGain">0%</strong><small>Flood-risk reduction</small></article>
-            <article><span>Natural capital</span><strong id="naturalCapital">0</strong><small>Biodiversity + carbon</small></article>
-            <article><span>Avoided loss</span><strong id="avoidedLoss">$0M</strong><small id="payback">Payback unavailable</small></article>
+          <div class="atlas-layout">
+            <section class="visual-panel" aria-label="Animal illustration with tappable regions">
+              <div class="animal-stage">
+                <img id="animalImage" src="assets/farm-atlas/chicken.png" alt="Illustrated chicken" />
+                <div id="regionMarkers" class="region-markers"></div>
+              </div>
+              <p id="animalSummary" class="animal-summary"></p>
+            </section>
+
+            <aside class="detail-panel" aria-labelledby="regionTitle">
+              <div class="region-heading">
+                <p class="eyebrow">Body region</p>
+                <h3 id="regionTitle"></h3>
+                <p id="regionTip"></p>
+              </div>
+              <div id="useList" class="use-list"></div>
+            </aside>
+          </div>
+        </section>
+
+        <section id="planPanel" class="plan-panel" aria-labelledby="planTitle">
+          <div class="section-heading">
+            <p class="eyebrow">Saved ideas</p>
+            <h2 id="planTitle">Farm resource plan</h2>
+          </div>
+          <div id="planList" class="plan-list"></div>
+          <div class="plan-actions">
+            <button id="copyPlanBtn" class="secondary-button" type="button">Copy summary</button>
+            <button id="clearPlanBtn" class="danger-button" type="button">Clear plan</button>
           </div>
         </section>
       </main>
-
-      <section id="portfolio" class="portfolio-dock">
-        <div class="dock-header">
-          <div>
-            <span class="eyebrow">Intervention portfolio</span>
-            <h2>Compare coastal defenses against ecology, cost, and protection.</h2>
-          </div>
-          <div class="weight-controls" aria-label="Decision priorities">
-            <label>Protection <input id="weightProtection" type="range" min="1" max="5" value="4" /></label>
-            <label>Ecology <input id="weightEcology" type="range" min="1" max="5" value="4" /></label>
-            <label>Cost <input id="weightCost" type="range" min="1" max="5" value="3" /></label>
-          </div>
-        </div>
-        <div id="solutionGrid" class="solution-grid"></div>
-      </section>
-
-      <section class="analysis-deck">
-        <div class="analysis-card">
-          <span class="eyebrow">Decision ranking</span>
-          <div id="recommendationList" class="recommendation-list"></div>
-        </div>
-        <div class="analysis-card generated-visual">
-          <span class="eyebrow">Generated visual intelligence</span>
-          <div class="ai-map-visual"></div>
-          <p id="tradeoffText"></p>
-        </div>
-        <div id="brief" class="analysis-card brief-panel">
-          <div class="brief-top">
-            <div>
-              <span class="eyebrow">Science brief</span>
-              <h2>Executive summary</h2>
-            </div>
-            <button id="copyBriefBtn">Copy brief</button>
-          </div>
-          <div id="briefText" class="brief-text"></div>
-        </div>
-      </section>
     </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
     <script src="app.js"></script>
     <script>
