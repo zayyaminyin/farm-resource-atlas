@@ -1,4 +1,4 @@
-const CACHE_NAME = "farm-resource-atlas-v3";
+const CACHE_NAME = "farm-resource-atlas-v4";
 const APP_ASSETS = [
   "./",
   "./atlas.html",

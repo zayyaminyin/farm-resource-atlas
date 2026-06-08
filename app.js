@@ -16,7 +16,9 @@ const animals = [
       {
         id: "breast",
         label: "Breast and frame",
-        position: { x: 55, y: 58 },
+        marker: "1",
+        position: { x: 54, y: 51 },
+        focusPosition: { x: 54, y: 51 },
         wasteReductionTip: "Separate prime cuts, trim, and frame so each stream has a clear next use.",
         uses: [
           {
@@ -42,7 +44,9 @@ const animals = [
       {
         id: "feathers",
         label: "Feathers",
-        position: { x: 33, y: 43 },
+        marker: "2",
+        position: { x: 36, y: 36 },
+        focusPosition: { x: 36, y: 38 },
         wasteReductionTip: "Keep feathers dry and clean if they may be used for craft, insulation trials, or compost research.",
         uses: [
           {
@@ -68,7 +72,9 @@ const animals = [
       {
         id: "eggshells",
         label: "Eggshells and feet",
-        position: { x: 60, y: 82 },
+        marker: "3",
+        position: { x: 55, y: 82 },
+        focusPosition: { x: 55, y: 78 },
         wasteReductionTip: "Collect small parts separately so they are not lost in general waste.",
         uses: [
           {
@@ -108,7 +114,9 @@ const animals = [
       {
         id: "muscle",
         label: "Muscle cuts",
-        position: { x: 58, y: 47 },
+        marker: "1",
+        position: { x: 58, y: 44 },
+        focusPosition: { x: 58, y: 44 },
         wasteReductionTip: "Plan premium, ground, trim, and stock streams before the animal is processed.",
         uses: [
           {
@@ -134,7 +142,9 @@ const animals = [
       {
         id: "hide",
         label: "Hide and hair",
-        position: { x: 46, y: 35 },
+        marker: "2",
+        position: { x: 52, y: 35 },
+        focusPosition: { x: 52, y: 35 },
         wasteReductionTip: "Line up hide preservation or pickup quickly because quality drops if timing slips.",
         uses: [
           {
@@ -160,7 +170,9 @@ const animals = [
       {
         id: "bones-fat-organs",
         label: "Bones, fat, and organs",
-        position: { x: 73, y: 62 },
+        marker: "3",
+        position: { x: 73, y: 58 },
+        focusPosition: { x: 73, y: 58 },
         wasteReductionTip: "Separate edible offal, bones, and fat by use case instead of treating them as one stream.",
         uses: [
           {
@@ -186,7 +198,9 @@ const animals = [
       {
         id: "manure",
         label: "Manure",
-        position: { x: 84, y: 76 },
+        marker: "4",
+        position: { x: 88, y: 44 },
+        focusPosition: { x: 88, y: 48 },
         wasteReductionTip: "Treat manure as a planned fertility stream with timing, storage, and runoff controls.",
         uses: [
           {
@@ -226,7 +240,9 @@ const animals = [
       {
         id: "wool",
         label: "Wool fleece",
-        position: { x: 55, y: 42 },
+        marker: "1",
+        position: { x: 56, y: 42 },
+        focusPosition: { x: 56, y: 42 },
         wasteReductionTip: "Skirt and sort wool early so clean fleece, seconds, and compost-grade fiber do not mix.",
         uses: [
           {
@@ -252,7 +268,9 @@ const animals = [
       {
         id: "meat",
         label: "Meat cuts",
-        position: { x: 64, y: 58 },
+        marker: "2",
+        position: { x: 58, y: 55 },
+        focusPosition: { x: 58, y: 55 },
         wasteReductionTip: "Use cut sheets that balance roasts, chops, stew meat, trim, and bones.",
         uses: [
           {
@@ -278,7 +296,9 @@ const animals = [
       {
         id: "lanolin-hide",
         label: "Lanolin and hide",
-        position: { x: 38, y: 38 },
+        marker: "3",
+        position: { x: 33, y: 40 },
+        focusPosition: { x: 34, y: 39 },
         wasteReductionTip: "Identify whether fiber, hide, or lanolin recovery makes sense at your scale before committing storage space.",
         uses: [
           {
@@ -304,7 +324,9 @@ const animals = [
       {
         id: "manure",
         label: "Manure and bedding",
-        position: { x: 76, y: 77 },
+        marker: "4",
+        position: { x: 79, y: 55 },
+        focusPosition: { x: 79, y: 57 },
         wasteReductionTip: "Plan bedding, manure, and compost as one nutrient-management stream.",
         uses: [
           {
@@ -337,6 +359,7 @@ const elements = {
   animalImage: document.querySelector("#animalImage"),
   animalSummary: document.querySelector("#animalSummary"),
   regionMarkers: document.querySelector("#regionMarkers"),
+  regionKey: document.querySelector("#regionKey"),
   regionTitle: document.querySelector("#regionTitle"),
   regionTip: document.querySelector("#regionTip"),
   useList: document.querySelector("#useList"),
@@ -367,7 +390,8 @@ function useKey(animalId, regionId, title) {
 }
 
 function regionFocusStyle(region) {
-  return `--focus-x:${region.position.x}%; --focus-y:${region.position.y}%`;
+  const focus = region.focusPosition || region.position;
+  return `--focus-x:${focus.x}%; --focus-y:${focus.y}%`;
 }
 
 function restoreSavedUses() {
@@ -438,15 +462,36 @@ function renderAtlas() {
           data-region-id="${item.id}"
           aria-label="Open ${item.label}"
         >
+          <b>${item.marker || ""}</b>
           <span>${item.label}</span>
         </button>
       `
     )
     .join("");
 
+  if (elements.regionKey) {
+    elements.regionKey.innerHTML = animal.regions
+      .map(
+        (item) => `
+          <button class="region-key-item ${item.id === region.id ? "active" : ""}" type="button" data-key-region-id="${item.id}">
+            <b>${item.marker || ""}</b>
+            <span>${item.label}</span>
+          </button>
+        `
+      )
+      .join("");
+  }
+
   document.querySelectorAll("[data-region-id]").forEach((button) => {
     button.addEventListener("click", () => {
       selectedRegionId = button.dataset.regionId;
+      render();
+    });
+  });
+
+  document.querySelectorAll("[data-key-region-id]").forEach((button) => {
+    button.addEventListener("click", () => {
+      selectedRegionId = button.dataset.keyRegionId;
       render();
     });
   });

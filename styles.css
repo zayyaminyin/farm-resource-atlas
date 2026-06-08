@@ -449,14 +449,23 @@ h1 {
 
 .region-marker {
   position: absolute;
-  width: 28px;
-  height: 28px;
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
   color: var(--cream-soft);
   background: var(--burgundy);
   border: 3px solid rgba(255, 248, 232, 0.9);
   border-radius: 999px;
   box-shadow: 0 0 0 7px rgba(154, 62, 78, 0.18), 0 10px 22px rgba(0, 0, 0, 0.3);
   transform: translate(-50%, -50%);
+}
+
+.region-marker b {
+  position: relative;
+  z-index: 2;
+  font-size: 13px;
+  line-height: 1;
 }
 
 .region-marker::after {
@@ -502,8 +511,51 @@ h1 {
   margin: 0;
   color: var(--muted);
   border-top: 1px solid var(--line);
-  padding: 14px 16px 16px;
+  padding: 14px 16px 10px;
   line-height: 1.45;
+}
+
+.region-key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0 16px 16px;
+}
+
+.region-key-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 34px;
+  color: var(--muted);
+  background: rgba(38, 55, 71, 0.52);
+  border: 1px solid rgba(184, 243, 223, 0.12);
+  border-radius: 999px;
+  padding: 4px 10px 4px 5px;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.region-key-item b {
+  display: grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  color: var(--cream-soft);
+  background: var(--burgundy);
+  border: 2px solid rgba(255, 248, 232, 0.8);
+  border-radius: 999px;
+  font-size: 11px;
+}
+
+.region-key-item.active {
+  color: var(--ink);
+  background: rgba(184, 243, 223, 0.14);
+  border-color: rgba(184, 243, 223, 0.28);
+}
+
+.region-key-item.active b {
+  background: var(--green-deep);
 }
 
 .detail-panel {
@@ -897,8 +949,8 @@ h1 {
   }
 
   .region-marker {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
   }
 
   .region-marker span {
