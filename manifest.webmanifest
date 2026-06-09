@@ -4,8 +4,8 @@
   "description": "A mobile-first sustainability atlas for planning respectful, low-waste farm resource pathways.",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#020504",
-  "theme_color": "#071211",
+  "background_color": "#f6f0dc",
+  "theme_color": "#f6df9c",
   "icons": [
     {
       "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='192' height='192' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='28' fill='%23020504'/%3E%3Ccircle cx='96' cy='96' r='60' fill='%2312262b'/%3E%3Cpath d='M52 104c22-35 58-48 88-27 13 9 22 24 24 43-20-17-42-21-66-11-19 8-34 7-46-5z' fill='%239a3e4e'/%3E%3Cpath d='M65 75c20 8 38 8 55 0 7 20 3 36-13 48-18-18-32-34-42-48z' fill='%23ffb45c'/%3E%3Ctext x='96' y='118' text-anchor='middle' font-family='Arial,sans-serif' font-size='42' font-weight='800' fill='%23fff8e8'%3EFA%3C/text%3E%3C/svg%3E",
