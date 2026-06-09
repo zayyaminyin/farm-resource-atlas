@@ -501,26 +501,14 @@ function renderAtlas() {
   elements.useList.innerHTML = `
     <div class="assistant-bubble">
       <span>Atlas assistant</span>
-      <p>I found ${region.uses.length} practical pathways for ${animal.name.toLowerCase()} ${region.label.toLowerCase()}. Start with the visual focus, then add the options that fit your farm plan.</p>
+      <p>I found ${region.uses.length} practical pathways for ${animal.name.toLowerCase()} ${region.label.toLowerCase()}. Tap the numbered atlas markers to compare parts, then add the options that fit your farm plan.</p>
     </div>
-    <figure class="region-visual" style="${regionFocusStyle(region)}">
-      <img src="${animal.imageAsset}" alt="${animal.name} visual focus on ${region.label.toLowerCase()}" />
-      <figcaption>
-        <span>${animal.name}</span>
-        <strong>${region.label}</strong>
-      </figcaption>
-      <i aria-hidden="true"></i>
-    </figure>
   ` + region.uses
     .map((use) => {
       const key = useKey(animal.id, region.id, use.title);
       const isSaved = savedUses.has(key);
       return `
         <article class="use-card" style="${regionFocusStyle(region)}">
-          <div class="use-visual" aria-hidden="true">
-            <img src="${animal.imageAsset}" alt="" />
-            <span>${region.label}</span>
-          </div>
           <div class="use-card-top">
             <span class="category">${use.category}</span>
             <button class="save-button ${isSaved ? "saved" : ""}" type="button" data-use-key="${key}">
