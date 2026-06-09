@@ -727,6 +727,11 @@ function markerStyle(region) {
   ].join("; ");
 }
 
+function categoryInitial(category) {
+  return (category || "P").trim().slice(0, 1).toUpperCase();
+}
+
+
 function restoreSavedUses() {
   try {
     return new Set(JSON.parse(localStorage.getItem(STORAGE_KEY)) || []);
@@ -849,9 +854,14 @@ function renderAtlas() {
               ${isSaved ? "Added" : "Add"}
             </button>
           </div>
-          <h4>${use.title}</h4>
-          <p>${use.description}</p>
-          <small>${use.resourceRespectNote}</small>
+          <div class="use-card-body">
+            <span class="pathway-icon" aria-hidden="true">${categoryInitial(use.category)}</span>
+            <div>
+              <h4>${use.title}</h4>
+              <p>${use.description}</p>
+              <small>${use.resourceRespectNote}</small>
+            </div>
+          </div>
         </article>
       `;
     })
