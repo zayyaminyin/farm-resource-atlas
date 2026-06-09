@@ -1,7 +1,7 @@
 {
   "name": "Farm Resource Atlas",
   "short_name": "Farm Atlas",
-  "description": "A mobile-first sustainability atlas for planning respectful, low-waste farm resource pathways.",
+  "description": "A mobile-first professional farm and butchery atlas for detailed cuts, byproducts, and low-waste resource pathways.",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#f6f0dc",

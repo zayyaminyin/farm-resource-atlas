@@ -7,7 +7,7 @@
     <meta name="theme-color" content="#f6f0dc" />
     <meta
       name="description"
-      content="A mobile-first farm sustainability atlas for planning respectful, low-waste use pathways."
+      content="A mobile-first professional farm and butchery atlas for planning detailed cuts, byproducts, and low-waste resource pathways."
     />
     <link rel="manifest" href="manifest.webmanifest" />
     <link rel="stylesheet" href="styles.css" />
@@ -25,7 +25,7 @@
           <span class="brand-mark">FA</span>
           <span>
             <strong>Farm Resource Atlas</strong>
-            <small>GenAI sustainability atlas</small>
+            <small>Professional cut and resource atlas</small>
           </span>
         </a>
         <button id="printBtn" class="header-action" type="button" title="Print plan" aria-label="Print plan">⎙</button>
@@ -34,20 +34,20 @@
       <main id="top">
         <section class="hero-section" aria-labelledby="heroTitle">
           <div class="hero-copy">
-            <p class="eyebrow">Ask the atlas</p>
-            <h1 id="heroTitle">Map every resource pathway with a visual AI guide.</h1>
+            <p class="eyebrow">Professional atlas</p>
+            <h1 id="heroTitle">Inspect cuts, byproducts, and resource streams visually.</h1>
             <p>
-              Choose an animal, tap a highlighted region, and let the atlas explain practical low-waste uses in a chat-style workspace.
+              Choose an animal, tap a glowing body zone, and review detailed pathways for cuts, materials, dairy, manure, and low-waste planning.
             </p>
           </div>
           <div class="prompt-card" aria-label="Example prompt">
-            <span>Resource prompt</span>
-            <strong>What can this body region become?</strong>
+            <span>Butcher prompt</span>
+            <strong>What cut or resource stream is this?</strong>
           </div>
           <div class="hero-metrics" aria-label="MVP coverage">
             <span><strong>3</strong> animals</span>
-            <span><strong>11</strong> regions</span>
-            <span><strong>33</strong> use cases</span>
+            <span><strong>20</strong> zones</span>
+            <span><strong>80</strong> pathways</span>
           </div>
           <div class="hero-actions" aria-label="Resource plan actions">
             <button id="viewPlanBtn" class="primary-button" type="button">View plan</button>
@@ -57,8 +57,8 @@
 
         <section class="animal-picker" aria-labelledby="animalPickerTitle">
           <div class="section-heading">
-            <p class="eyebrow">Choose an animal</p>
-            <h2 id="animalPickerTitle">Visual atlas</h2>
+              <p class="eyebrow">Choose an animal</p>
+            <h2 id="animalPickerTitle">Cut atlas</h2>
           </div>
           <div id="animalGrid" class="animal-grid"></div>
         </section>
@@ -73,18 +73,18 @@
           </div>
 
           <div class="atlas-layout">
-            <section class="visual-panel" aria-label="Animal illustration with tappable regions">
+            <section class="visual-panel" aria-label="Animal illustration with glowing tappable body zones">
               <div class="animal-stage">
                 <img id="animalImage" src="assets/farm-atlas/chicken.png" alt="Illustrated chicken" />
                 <div id="regionMarkers" class="region-markers"></div>
               </div>
               <p id="animalSummary" class="animal-summary"></p>
-              <div id="regionKey" class="region-key" aria-label="Numbered region key"></div>
+              <div id="regionKey" class="region-key" aria-label="Body zone shortcuts"></div>
             </section>
 
             <aside class="detail-panel" aria-labelledby="regionTitle">
               <div class="region-heading">
-                <p class="eyebrow">Body region</p>
+                <p class="eyebrow">Selected zone</p>
                 <h3 id="regionTitle"></h3>
                 <p id="regionTip"></p>
               </div>
@@ -95,8 +95,8 @@
 
         <section id="planPanel" class="plan-panel" aria-labelledby="planTitle">
           <div class="section-heading">
-            <p class="eyebrow">Saved ideas</p>
-            <h2 id="planTitle">Farm resource plan</h2>
+            <p class="eyebrow">Saved pathways</p>
+            <h2 id="planTitle">Farm and butcher plan</h2>
           </div>
           <div id="planList" class="plan-list"></div>
           <div class="plan-actions">
