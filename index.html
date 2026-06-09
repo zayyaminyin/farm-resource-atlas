@@ -59,7 +59,7 @@
           </div>
         </section>
 
-        <section class="animal-picker" aria-labelledby="animalPickerTitle">
+        <section id="animalPicker" class="animal-picker" aria-labelledby="animalPickerTitle">
           <div class="section-heading">
             <p class="eyebrow">Choose an animal</p>
             <h2 id="animalPickerTitle">Cut atlas</h2>
@@ -67,7 +67,32 @@
           <div id="animalGrid" class="animal-grid"></div>
         </section>
 
-        <section class="atlas-workspace" aria-labelledby="atlasTitle">
+        <section class="quick-actions" aria-labelledby="quickActionsTitle">
+          <div class="section-heading">
+            <p class="eyebrow">Work queue</p>
+            <h2 id="quickActionsTitle">Instant actions</h2>
+          </div>
+          <div class="action-list">
+            <a class="action-row" href="#atlasWorkspace">
+              <span class="action-icon">C</span>
+              <span>
+                <strong>Cut sheet review</strong>
+                <small>Compare zones and retail pathways</small>
+              </span>
+              <b>↗</b>
+            </a>
+            <a class="action-row" href="#planPanel">
+              <span class="action-icon">P</span>
+              <span>
+                <strong>Saved pathway plan</strong>
+                <small>Build a farm and butcher summary</small>
+              </span>
+              <b>↗</b>
+            </a>
+          </div>
+        </section>
+
+        <section id="atlasWorkspace" class="atlas-workspace" aria-labelledby="atlasTitle">
           <div class="atlas-topline">
             <div>
               <p class="eyebrow">Selected atlas</p>
@@ -109,6 +134,13 @@
           </div>
         </section>
       </main>
+
+      <nav class="bottom-nav" aria-label="Primary app navigation">
+        <a href="#top" aria-label="Home">⌂<span>Home</span></a>
+        <a href="#animalPicker" aria-label="Animals">▣<span>Animals</span></a>
+        <a href="#atlasWorkspace" aria-label="Atlas">◎<span>Atlas</span></a>
+        <a href="#planPanel" aria-label="Plan">▤<span>Plan</span></a>
+      </nav>
     </div>
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
